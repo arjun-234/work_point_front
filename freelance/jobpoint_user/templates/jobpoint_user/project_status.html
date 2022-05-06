@@ -1,0 +1,57 @@
+{% extends 'jobpoint_user/base.html' %} 
+
+
+    {% block content %}
+              
+
+      <h4 style="text-align: center;">  Project Status </h4>
+      <!-- <marquee behavior="" direction=""> Progect Status </marquee> -->
+
+      {% for i in  status  %}
+      
+     {% if i.is_accepted == True %}
+
+
+                   
+
+
+                <div class="col-md-6" style="margin-left: 380px;">
+                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                      <div class="card-body d-flex flex-column align-items-start">
+                          <strong class="d-inline-block mb-2 text-success"><a href="deletestatus/{{i.id}}" class="text-danger" style="margin-left: 680px;" >x</a>   </strong>
+                          <h5 class="d-inline-block mb-2 text-success"> Project Status :   {{i.status}}  <a href = "updatestatus/{{i.id}}" style="margin-left: 670px;"> <i class="fas fa-edit"></i> </a>   </h5>
+                        
+                    
+                     <h5 class="mb-0">
+                          <p class="text-dark" > Client: {{i.client}} </p>
+                          
+                         
+                        </h5>
+                        <div class="mb-1 text-muted"> <b>Job Title:  {{i.job}} </b> </div>
+                        <div class="mb-1 text-muted">
+                              
+                          
+                                  
+                        </div>
+                       
+                      
+                        
+                      </div>
+                      
+                    </div>
+                  </div>
+
+    
+     
+     {% endif %}
+
+   
+       
+       
+      
+      {% endfor %}
+
+
+
+    {% endblock %} 
+      

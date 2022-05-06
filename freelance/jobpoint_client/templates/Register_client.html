@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<div class="container-fluid py-5" id="contact">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+        <div class="container">
+            <div class="position-relative d-flex align-items-center justify-content-center">
+                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Register</h1>
+                <h1 class="position-absolute text-uppercase text-primary">Register your Self</h1>
+               
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-form text-center">
+                        <div id="success">
+                            {% comment %} {% if messages %}
+                            <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                            {% endif %} {% endcomment %}
+                        </div>
+                        <form  method="POST" id="register">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="control-group col-sm-6">
+                                    <input type="text" class="form-control p-4" name="first_name" placeholder="First Name"
+                                        required data-validation-required-message="Please enter your name" />
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="control-group col-sm-6">
+                                    <input type="text" class="form-control p-4" name="last_name" placeholder="Last Name"
+                                        required data-validation-required-message="Please enter your Name" />
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="control-group col-sm-14">
+                                <input pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{5,20}$" type="text" class="form-control p-4" name="username" placeholder="Your Usename"
+                                   title="  1)Username must be Start with Uppercase and lowercase letters
+                                            2) Username may only contain Numbers from 0-9 and Special characters _ and .
+                                            3) Username may not Begin with characters _ - .
+                                                Have more than one sequential character _ - . inside" required data-validation-required-message="Please enter Your Usename" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group col-sm-14">
+                                <input type="email" pattern="+[a-z0-9][a-z]@.com$" class="form-control p-4" name="email" placeholder="Your Email"
+                                    required data-validation-required-message="Please enter Your Email" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group col-sm-14">
+                                <input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" type="password" class="form-control p-4" name="password" placeholder="Your Password"
+                                    required data-validation-required-message="Please enter Your Password" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group col-sm-14">
+                                <input pattern="[0-9]{10}" maxlength="10" title="Phone number must be of only 10 digits" type="text" class="form-control p-4" name="mobile_number" placeholder="Your Mobile Number"
+                                    required data-validation-required-message="Please enter Your Number " />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                <input class="control-group col-sm-1" type="radio" name="gender" id="flexRadioDefault1" value='female'>
+                                <label class="control-group" id="gender">Female</label>
+                              </div>
+                              <div class="form-row">
+                                <input class="control-group col-sm-1" type="radio" name="gender" id="flexRadioDefault2" value='male'checked>
+                                <label class="control-group" id="gender" >
+                                 Male
+                                </label>
+                              </div>
+                              <br>
+                              <div class="control-group col">
+                                {% comment %} <input type="text" class="form-control p-4" name="country" placeholder="Your Country"
+                                    required="required" data-validation-required-message="Please enter Your Country " />
+                                <p class="help-block text-danger"></p>
+                            </div> {% endcomment %}
+                            {% comment %} <label id="lbl"><b>Role</b></label> {% endcomment %}
+                    
+                            <select name="country" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px;height: 35px;">
+                                <option selected  class="control-group col -sm-10">Select Counrty</option>
+                                <option>INDIA</option>
+                                <option >USA</option>
+                                <option >UEA</option>
+                                <option >Pakistan</option>
+                                <option >Franch</option>
+                                <option >Russia</option>
+                              </select><br><br>
+                         
+                            <select name="role" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px; height: 35px;">
+                                <option selected value="0" class="control-group col -sm-10">Select Role</option>
+                                <option value="1">Client</option>
+                                <option value="0">User</option>
+                              </select><br><br><br><br>
+                            <div>
+                                <button class="btn btn-outline-primary" type="submit" id="login">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock base %}

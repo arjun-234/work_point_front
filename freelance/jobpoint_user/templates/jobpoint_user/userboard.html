@@ -1,0 +1,96 @@
+{% extends 'jobpoint_user/base.html' %} 
+<body>
+
+    {% block content %}
+
+    <form class="d-flex" method="post" style="width:800px;margin-left:300px;" >
+      {% csrf_token %}
+      <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+    <!-- search job =========================== -->
+    
+    {% for s in search %}
+    <div class="card success mb-3" style="width: 800px;height:230px;margin-left:30%;" >
+    
+    <div class="card text-left">
+      
+      <div class="card-body">
+        
+        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted date : {{s.posted_date}}</div>
+        <h5 class="card-title"> Title : {{s.title}}</h5>
+        <p class="card-text"><b>description</b> :{{s.description}}</p>
+        <h5> Price : {{s.price}}</h5>
+      </div>
+     
+    </div>
+  </div>
+  <br>
+  {% endfor %}
+
+    <!-- view job Start ______________________________ -->
+  {% for d in data %}
+
+        
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="contact-form text-center">
+                <div id="success">
+                </div>
+                <div class="card gedf-card">
+                  <div class="card-header">
+                      <div class="d-flex justify-content-between align-items-center">
+                          <div class="d-flex justify-content-between align-items-center">
+                              
+                              <div class="ml-2">
+                                  <!-- <div class="h5 m-0">@{{username}}</div> -->
+                                 
+                              </div>
+                          </div>
+                          
+                      </div>
+
+                  </div>
+                  <div class="card-body">
+                      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted date : {{d.posted_date}}</div>
+                     
+                          <h5 class="card-title"> Title : {{d.title}}</h5>
+
+
+                      <p class="card-text">
+                          {{d.description}}
+                      </p>
+                      <h5> Price : {{d.price}}</h5>
+                      <div>
+                        {% for j in d.skill  %}
+                            
+                        <span class="badge badge-primary">{{j.name}}</span>
+                        {% endfor %}
+                          
+                      </div>
+                  </div>
+                  <div class="card-footer">
+                 
+                      <a href="like/{{d.id}}" class="card-link">{{d.likes|length}}<i class="fa fa-gittip"></i> Like</a>
+                    
+                     <a href="dislike/{{d.id}}" class="card-link">{{d.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
+                   
+                      <a  href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp; 
+                    
+                     
+                  </div>
+              </div>
+              
+           
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endfor %}
+
+
+
+{% endblock %} 
+      
+  </body>

@@ -1,0 +1,69 @@
+{% extends 'jobpoint_user/base.html' %}
+
+<body>
+    
+{% block content %} 
+ 
+<!-- Qualification Start ______________________________ -->
+<div class="container-fluid py-5" id="qualification">
+    <div class="container">
+        <div class="position-relative d-flex align-items-center justify-content-center">
+            <h1 class="display-3 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Quality</h1>
+            <h1 class="position-absolute text-uppercase text-success">Education & Expericence </h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6" >
+                <h3 class="mb-2" style="margin-top: -100px;">My Education</h3>
+                {% if not res %}
+                <a href = "{% url 'qualificaton'%}">Add</a>
+                {% else %}
+             
+                <div class="border-left border-primary pt-2 pl-4 ml-2">
+                    <div class="position-relative mb-1">
+                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
+                        {% for r in res %}
+                        <h5 class="font-weight-bold mb-1"> Recent Degree : {{r.recent_degree}}</h5>
+                        <p class="mb-2"><strong> University : {{r.university}}</strong> | <b>Passing year </b>: <small>{{r.passing_year}}</small></p>
+                        <p> <b>About </b> : {{r.about}}</p>
+                       
+                        <small> <a href="update/{{r.user}}" class="btn btn-outline-success"> Update</a></small>
+                        {% endfor %}
+                        {% endif %}
+                        <!-- <small> <a href="qualification" class="nav-item nav-link active">Add</a></small> -->
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h3 class="mb-4">My Expericence </h3>
+                <div class="border-left border-primary pt-1 pl-4 ml-2">
+                    {% if not data %}
+                    <a href = "{% url 'addexpirence'%}">Add</a>
+                    {% else %}
+                    
+                    {% for d in data %}
+                   
+                    <div class="position-relative mb-4">
+                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
+                      
+                      <br>
+                     
+                        <h5 class="font-weight-bold mb-1"> Previous job : {{d.previous_job}}</h5>
+                        <p class="mb-2"><strong> previous_company : {{d.previous_compny}} </strong> | Experience year : <small>{{d.experience_year}}</small></p>
+                        <p class="mb-2">About : {{d.about}}  | <small> <a  href = "updateexp/{{d.id}}" style="color: red;" href=""> Update</a></small></p> 
+                       
+                            {% endfor %}
+                     {% endif %}
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Qualification End -->
+{% endblock %}    
+  </body>
+
+  

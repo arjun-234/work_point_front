@@ -1,0 +1,56 @@
+{% extends 'jobpoint_user/base.html' %} 
+
+{% block content %} 
+<!-- Form start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+    
+    <form method="POST">
+        {% csrf_token %}
+       
+        <div class="quals">
+            <div class="control-group ">
+                <label style="margin-right:790px;"><b>Job</b></label>
+                <input type="text" value="{{data.previous_job}}" name="pjob" class="form-control p-4" id="degree" 
+                    required="required"  />
+                <p class="help-block text-danger"></p>
+            </div>
+            
+           
+            <div class="control-group ">
+                <label style="margin-right:790px;"><b>Compony</b></label>
+                <input type="text" name="pcomp" value="{{data.previous_compny}}" class="form-control p-4" id="cpi" placeholder="Your CPI"
+                    required="required"  />
+                <p class="help-block text-danger"></p>
+            </div>
+
+            <div class="control-group">
+                <label style="margin-right:790px;"><b> Experience Year</b></label>
+                <input type="text" name="eyear" value="{{data.experience_year}}" class="form-control p-4" id="passing_year" placeholder="Your Passing year"
+                    required="required" data-validation-required-message="Please enter your email" />
+                <p class="help-block text-danger"></p>
+            </div>
+            
+            <div class="control-group" required>
+                <label style="margin-right:790px;"><b>About You</b></label>
+                <input type="text" value="{{data.about}}" name="about" class="form-control p-4" id="passing_year" 
+                required="required" />
+                <!-- <textarea class="form-control p-4" name="about" placeholder="About yourself">
+
+                </textarea> -->
+                <p class="help-block text-danger"></p>
+            </div>
+            <br>
+            <div class="alert alert-success">
+            <input type="submit" class="btn btn-success" value="Submit" style="margin-left:300px;" >
+            </div> 
+        </div>
+    </form>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- form end >>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+   {% endblock %} 

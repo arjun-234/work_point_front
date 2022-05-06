@@ -1,0 +1,57 @@
+{% extends 'jobpoint_user/base.html' %} 
+{% load static %}
+
+{% block content %}
+
+
+<!-- <marquee behavior="" direction=""> <b>Notification</b></marquee> -->
+<h3 style="margin-left:38%;"> Notifications  {{msg}} </h3>
+{% for i in data %}
+
+{% if i.is_accepted != None  %}
+
+
+
+
+<div class="col-md-6" style="margin-left:22%;">
+    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+      <div class="card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 text-success"  > Client :  {{i.client}}   <a href="notify/{{i.id}}" class="text-danger" style="margin-left: 480px;" >x</a></strong>
+        <h5 class="mb-0">
+          <p class="text-dark" >Job:  {{i.job}}</p>
+          
+         
+        </h5>
+        <div class="mb-1 text-muted">Price: {{i.price}}</div>
+        <div class="mb-1 text-muted">
+              
+             {% if  i.is_accepted  == True   %}
+                
+                <strong class="d-inline-block mb-2 text-success"> Status:   Accepted  </strong>
+              
+              {% elif  i.is_accepted  == False    %}
+                  <strong class="d-inline-block mb-2 text-danger"> Status:   Not-Accepted  </strong>
+                
+              {% else  %}    
+                <strong class="d-inline-block mb-2 text-danger"> Status:  Pendig </strong>
+               
+             {% endif %}
+                  
+        </div>
+       
+        <p class="card-text mb-auto"  >  Discription : </p>
+        <textarea name="" id="" cols="70" rows="1" disabled>{{i.discription}}</textarea>
+        <!-- <a href="notify/{{i.id}}" class="text-danger" >Delete</a> -->
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+{% endif %}
+{% endfor %}
+ 
+{% endblock %} 
+      
+ 

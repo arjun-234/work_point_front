@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+
+<div class="container-fluid py-5" id="contact">
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+        <div class="container">
+            <div class="position-relative d-flex align-items-center justify-content-center">
+                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Login</h1>
+               
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-form text-center">
+                        <div id="success"></div>
+                        <form method='POST' name="sentMessage" id="contactForm">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="control-group col-sm-12">
+                                    <input type="text" class="form-control p-4" name="username" placeholder="Your username"
+                                        required data-validation-required-message="Please enter your Email" />
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                               
+                            </div>
+                            <div class="control-group col-sm-14">
+                                <input type="password" class="form-control p-4" name="password" placeholder="Your Password"
+                                    required data-validation-required-message="Please enter Your Password" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            
+                            <div>
+                                <button class="btn btn-outline-primary" type="submit" id="login">Login</button>
+
+                                <a href="/forgotPassword" class="btn btn-primary">forgotPassword ???</a>
+
+                                
+                               
+                            </div>
+                            
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock base %}

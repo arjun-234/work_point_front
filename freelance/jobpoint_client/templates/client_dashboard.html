@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block base %}
+<div class="container-fluid bg-primary d-flex align-items-center mb-5 py-5" id="home" style="min-height:10vh;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 px-50 pl-lg-0 pb-5 pb-lg-0">
+                {% if request.session.img_link is None %}
+                    <img class="img-fluid rounded-circle w-10 shadow-sm" src="{% static 'img/default.png' %}" alt="" style="height: 100px; reduce">
+                {% else %}
+                      <img class="img-fluid rounded-circle w-10 shadow-sm" src="{{request.session.img_link}}" height="mx-auto" width="140px;">
+                {% endif %}
+                
+            </div>
+            <div class="col-lg-7 text-center text-sm-right">
+                <h3 class="text-white font-weight-normal mb-3">Hey</h3>
+                <h1 class="display-5 text-uppercase text-primary sm " style="-webkit-text-stroke: 1px #ffffff;">{{request.session.first_name}}</h1>
+                <h1 class="typed-text-output d-inline font-weight-lighter text-white"></h1>
+                <div class="typed-text d-none">Welcome To Work Point</div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
+{% endif %}
+<div class="container-fluid py-5" id="contact">
+    <div class="container">
+        
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="contact-form text-center">
+                    {% for i in data %}
+                    <div class="card gedf-card">
+                      <div class="card-header">
+                          <div class="d-flex justify-content-between align-items-center">
+                              <div class="d-flex justify-content-between align-items-center">
+                                  <div class="mr-2">
+                                      <img class="rounded-circle" width="45" src="{{img_link}}" alt="">
+                                  </div>
+                                  <div class="ml-2">
+                                      <div class="h5 m-0">@{{username}}</div>
+                                     {% comment %} {{username}} {% endcomment %}
+                                  </div>
+                              </div>
+                              <div>
+                                  <div class="dropdown">
+                                      <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <i class="fa fa-ellipsis-h"></i>
+                                      </button>
+                                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                                          <!-- <div class="h6 dropdown-header">Configuration</div> -->
+                                          <a class="dropdown-item" href="/editpost/{{i.id}}">Edit Post</a>
+                                          <a class="dropdown-item" href="/deletepost/{{i.id}}">Delete</a>
+                                          <!-- <a class="dropdown-item" href="#">Report</a> -->
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+  
+                      </div>
+                      <div class="card-body">
+                          <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{i.posted_date}}</div>
+                          <a class="card-link" href="#">
+                              <h5 class="card-title">{{i.title}}</h5>
+                          </a>
+  
+                          <p class="card-text">
+                            {{i.description|linebreaks}}
+                          </p>
+                          <div>
+                            {% for j in i.skill  %}
+                            
+                            <span class="badge badge-primary">{{j.name}}</span>
+                            {% endfor %}
+                        
+                              
+                          </div>
+                      </div>
+                      <div class="card-footer">
+                          <a href="#" class="card-link">Price <i class="fa fa-gittip"></i> {{i.price}}</a>
+                          <a href="#" class="card-link">Likes<i class="fa fa-gittip"></i> {{i.likes|length}}</a>
+                         
+                      </div>
+                     
+                  </div>
+                  <br>
+                  {% endfor %}
+                  {% comment %} post 2 {% endcomment %}
+                      
+                
+                
+                
+                
+                
+                
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock base %}
