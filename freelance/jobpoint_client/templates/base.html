@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 {% load static %}
 
@@ -63,41 +63,12 @@
         </button>
         <div class="collapse navbar-collapse px-lg-3" id="navbarCollapse">
         <div class="navbar-nav m-auto py-0">
-          {% if request.path == '/dashboardclient/' %}
             <a href="/dashboardclient" class="nav-item nav-link active">Home</a>
-          {% else %}
-            <a href="/dashboardclient" class="nav-item nav-link">Home</a>
-          {% endif %}
-
-          {% if request.path == '/editprofile/' %}
-            <a href="/editprofile" class="nav-item nav-link active">Edit Profile</a>
-          {% else %}
             <a href="/editprofile" class="nav-item nav-link">Edit Profile</a>
-          {% endif %}
-
-          {% if request.path == '/makepost/' %}
-            <a href="/makepost" class="nav-item nav-link active">Post a Job</a>
-          {% else %}
             <a href="/makepost" class="nav-item nav-link">Post a Job</a>
-          {% endif %}
-
-          {% if request.path == '/proposal_history' %}
-            <a href="/proposal_history" class="nav-item nav-link active">Proposal History</a>
-          {% else %}
             <a href="/proposal_history" class="nav-item nav-link">Proposal History</a>
-          {% endif %}
-
-          {% if request.path == '/task_status' %}
-            <a href="/task_status" class="nav-item nav-link active">Task Status</a>
-          {% else %}
             <a href="/task_status" class="nav-item nav-link">Task Status</a>
-          {% endif %}
-
-          {% if request.path == '/chatbox/' %}
-            <a href="/chatbox" class="nav-item nav-link active">ChatBox</a>
-          {% else %}
             <a href="/chatbox" class="nav-item nav-link">ChatBox</a>
-          {% endif %}
         </div>
       
         <div class="form-outline">
@@ -159,21 +130,22 @@
     </nav>
     {% else %}
     
-    <nav class="navbar sticky-top shadow-sm navbar-expand-lg bg-light navbar-light d-flex py-3 py-lg-0 px-lg-5">
+    <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-light navbar-light d-flex py-3 py-lg-0 px-lg-5">
         <a href="/login" class="navbar-brand ml-lg-3">
             <h1 class="m-0 display-5"><span class="text-primary">Work</span>Point</h1>
         </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <button type="button" class="navbar-toggler collapsed"  data-toggle="collapse"  data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-nav ml-auto py-10">
-        <a href="/login" class="btn btn-outline-primary d-none d-lg-block">Login</a>
-        <a href="/register" class="btn btn-outline-primary d-none d-lg-block">Sign up</a>
-        
+        <div class="collapse navbar-collapse px-lg-3" id="navbarCollapse">
+        <div class="navbar-nav" style="margin-left: 85%;">
+        <a href="/login" class="nav-item  btn btn-primary d-lg-block w-90 p-4 ">Login</a>
+        <a href="/register" class="nav-item  btn btn-primary d-lg-block w-90 p-4 ">Sign up</a>
+        </div>
         </div>
     </nav>
         
-
+    <!-- btn btn-outline-primary d-none d-lg-block -->
     {% endif %}
     
     <!-- Navbar End -->

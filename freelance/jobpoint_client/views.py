@@ -1,4 +1,3 @@
-from dataclasses import replace
 from django.contrib import messages
 import requests
 from django.core.files.storage import FileSystemStorage
@@ -78,13 +77,15 @@ def register(request):
 
             }
         response =  requests.post(url=urls,json=data)
-        
+
         if response.status_code==200:
             request.session['username']=username
-            messages.info(request,response.json()['msg'])
+            msg=response.json()['msg']
+            messages.info(request, msg)
             return redirect("login")
         else:
-            messages.info(request,response.json())
+            msg=response.json()['msg']
+            messages.info(request, msg)
             return redirect('register')
             
     return render(request,'Register_client.html')
@@ -101,7 +102,7 @@ def dashboard_client(request):
             }
         notification_response=requests.post(url=notification_list_url,headers=token,json=notification_data)
 
-        notification_list=notification_response.json()[::-1]
+        notification_list=notification_response.json()
 
         username = request.session['username']
         urls=f'{url}client_job_list'
@@ -114,7 +115,7 @@ def dashboard_client(request):
             "username":request.session['username']
         }
         response=requests.post(url=urls,headers=token,json=data)
-        response_data=response.json()
+        response_data=response.json()[::-1]
         return render(request,"client_dashboard.html",{"data":response_data,"username":username,"notification_list":notification_list})
     else:
         return redirect("login")
@@ -203,8 +204,7 @@ def editprofile(request):
                     "last_name":response.json()['last_name'],
                     "username":response.json()['username'],
                     "about":response.json()['about'],
-                    "email":response.json()['email'],
-                    "mobile":response.json()['mobile']
+                    "email":response.json()['email']
         }
         if request.method=='POST':
             edit_url=f'{url}edit_profile'
@@ -214,7 +214,6 @@ def editprofile(request):
                 first_name=request.POST.get('fs_name')
                 last_name=request.POST.get('lastname')
                 about=request.POST.get('about')
-                mobile=request.POST.get('mobile')
                 user_name = request.session['username']
                 
                 edit_data={
@@ -222,26 +221,28 @@ def editprofile(request):
                     "img_link":response.json()["img_link"],
                     "last_name":last_name,
                     "username":user_name,
-                    "about":about,
-                    "mobile":mobile
+                    "about":about
                     }
                 edit_response=requests.put(url=edit_url,headers=token,json=edit_data)
-                response=requests.post(url=urls,headers=token,json=data)
+                response=requests.post(urls,headers=token,json=data)
                 request.session['img_link']=response.json()["img_link"]
                 # request.session['img_link']=edit_response.json()["img_link"]
                 if edit_response.status_code==200:
+                    token={
+                            'Authorization': f"Token {request.session['user_token']}"
+                                    
+                            }
                     data={
                                     "username":request.session['username']
                         }
-                    updated_response=requests.post(url=urls,headers=token,json=data)
+                    updated_response=requests.post(urls,headers=token,json=data)
                     updated_data={
                         "first_name":updated_response.json()["first_name"],
                         "img_link":updated_response.json()["img_link"],
                         "last_name":updated_response.json()['last_name'],
                         "username":updated_response.json()['username'],
                         "about":updated_response.json()['about'],
-                        "email":response.json()['email'],
-                        "mobile":updated_response.json()['mobile']
+                        "email":response.json()['email']
                     }
                     # request.session['img_link']=updated_response.json()["img_link"]
                     # request.session['first_name']=updated_response.json()["first_name"]
@@ -250,7 +251,6 @@ def editprofile(request):
                     # return redirect('dashboardclient')
                 else:
                     print(edit_response.json()['msg'])
-        print(response_data)
         return render(request,"edit_profile.html",response_data)
 
 
@@ -259,7 +259,6 @@ def editprofile(request):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def makepost(request):
-    #new testing 
     if 'username' in request.session:
         view_skill=f'{url}skill_list'
         skill_url=f'{url}add_job_skill'
@@ -316,33 +315,23 @@ def logout(request):
         if response.status_code==200:
             del request.session['username']          
         else:
-            return messages.info(request,"could'nt logout")
-            return redirect("dashboardclient")
+            return HttpResponse("Couldn't logout",response.status_code)
     return redirect('login')
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def upload(request):
     if request.method=="POST":
-        filextension=['jpg','jpeg','png']
         urls=f'{url}edit_profile'
-        token={
-                'Authorization': f"Token {request.session['user_token']}"
-              }
+      
         uploaded_filename = request.FILES['document']
-        filename_new=uploaded_filename.name
-        filename_new=filename_new.replace(" ","_")
         fs=FileSystemStorage()
-        if filename_new.split('.')[-1] in filextension:
-            fs.save(filename_new,uploaded_filename)
-            data={
-                "username":request.session['username'],
-                "img_link":f'/static/media/{filename_new}'
-            }
-            response=requests.put(url=urls,headers=token,json=data)
-            return redirect('editprofile')
-        else:
-            messages.info(request,'Invalid Image Format')
-            return redirect('upload_file')
+        fs.save(uploaded_filename.name,uploaded_filename)
+        print("AAAA",uploaded_filename)
+        data={
+            "username":request.session['username'],
+            "img_link":f'/static/media/{uploaded_filename}'
+        }
+        response=requests.put(url=urls,json=data)
+        return redirect('editprofile')
     return render(request,'upload_file.html',{"username":request.session['username']})
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def editpost(request,id):
@@ -555,7 +544,7 @@ def user_search_result(request):
         return redirect('dashboardclient')
     else:
         return redirect("login")
-############3
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)         
 def user_profile(request,id):
     if 'username' in request.session:
