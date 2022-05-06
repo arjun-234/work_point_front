@@ -373,25 +373,26 @@ def editpost(request,id):
             }
             title=request.POST.get('job_title')
             desc=request.POST.get('job_desc')
-            posted_date=request.POST.get('posted_date')
             username=request.session['username']
             price=request.POST.get('price')
             skill_list=request.POST.getlist('checks[]')
             edit_data={
                     "title":title,
                     "description":desc,
-                    "posted_date":posted_date,
                     "username":username,
                     "price":price
                 }
-                
+            print(edit_data, "===", edit_post_url) 
             view_response=requests.put(url=edit_post_url,headers=token,json=edit_data)
+            print(view_response.json())
             if view_response.status_code==200:
                 skill_data={
                 "job":id,
                 "skill_list":skill_list
                         }
-                response=requests.post(url=skill_url,json=skill_data)
+                print(skill_data, "????????")
+                response=requests.post(url=skill_url,headers=token,json=skill_data)
+                print(response, "#####")
                 return redirect('dashboardclient')
             else:
                 messages.info(request,view_response.json()['msg'])
