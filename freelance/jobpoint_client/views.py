@@ -246,6 +246,7 @@ def editprofile(request):
                     # request.session['img_link']=updated_response.json()["img_link"]
                     # request.session['first_name']=updated_response.json()["first_name"]
                     request.session['img_link']=updated_response.json()["img_link"]
+                    messages.info(request,"profile has been updated")
                     return render(request,"edit_profile.html", updated_data)
                     # return redirect('dashboardclient')
                 else:
@@ -397,7 +398,7 @@ def editpost(request,id):
             else:
                 messages.info(request,view_response.json()['msg'])
                 return redirect('dashboardclient')     
-        return render(request,"edit_post.html",{"view_data":get_edit_post,"username":request.session['username'],"data":skill_view_data})
+        return render(request,"edit_post.html",{"view_data":get_edit_post,"username":request.session['username'],"data":skill_view_data,"user_skill": [ i['name'] for i in get_edit_post['skill'] ] })
 
 def deletepost(request,id):
     if 'username' in request.session:
@@ -478,7 +479,6 @@ def chatbox(request,id=None):
                 first_name=None
 
         else:
-
             temp_list = [i['id'] for i in user_unique_list]
             if id not in temp_list:
                 request.session['msg_reciever_id'] = id
