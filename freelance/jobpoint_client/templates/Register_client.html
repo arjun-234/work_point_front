@@ -43,11 +43,8 @@
                                 </div>
                             </div>
                             <div class="control-group col-sm-14">
-                                <input pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{5,20}$" type="text" class="form-control p-4" name="username" placeholder="Your Usename"
-                                   title="  1)Username must be Start with Uppercase and lowercase letters
-                                            2) Username may only contain Numbers from 0-9 and Special characters _ and .
-                                            3) Username may not Begin with characters _ - .
-                                                Have more than one sequential character _ - . inside" required data-validation-required-message="Please enter Your Usename" />
+                                <input type="text" class="form-control p-4" name="username" placeholder="Your Usename"
+                                    required data-validation-required-message="Please enter Your Usename" />
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div class="control-group col-sm-14">
@@ -95,7 +92,7 @@
                               </select><br><br>
                          
                             <select name="role" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px; height: 35px;">
-                                <option selected value="0" class="control-group col -sm-10">Select Role</option>
+                                <option selected  class="control-group col -sm-10">Select Role</option>
                                 <option value="1">Client</option>
                                 <option value="0">User</option>
                               </select><br><br><br><br>

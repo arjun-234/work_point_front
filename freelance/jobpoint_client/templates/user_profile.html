@@ -418,7 +418,7 @@
                       {% if i.img_link is None %}
                       <img src="{% static 'img/default.png' %}" alt="">
                       {% else %}
-                      <img src="{{i.img_link}}" alt="">
+                      <img src="{% static 'img/{{i.img_link}}' %}" alt="">
                       {% endif %}
                   </a>
                   <h1 style="color:white;"> {{i.first_name}}</h1>
