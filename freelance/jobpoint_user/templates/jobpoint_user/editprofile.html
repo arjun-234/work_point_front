@@ -10,7 +10,6 @@
     {% endfor %}
 </ul>
 {% endif %}
-
 <div class="col">
     <div class="row">
       <div class="col mb-3">
@@ -49,20 +48,20 @@
              
               <div class="tab-content pt-3">
                 <div class="tab-pane active">
-                  <form method="POST" class="form" novalidate="">
+                  <form method="POST" >
                     {{edit_data}}
                     {% csrf_token %}
                     <div class="row">
                       <div class="col">
                         <div class="row">
                           <div class="col">
-                            <div class="form-group">
+                            <div class="control-group">
                               <label>First Name</label>
-                              <input name="fs_name" class="form-control" type="text"  value="{{first_name}}">
+                              <input name="fs_name" pattern="[a-zA-Z]+" title="Enter only alphabets" class="form-control" type="text" required  value="{{first_name}}" data-validation-required-message="Please enter your name" >
                             </div>
                             <div class="form-group">
                               <label>Last Name</label>
-                              <input class="form-control" type="text" name="lastname" value="{{last_name}}">
+                              <input class="form-control" type="text" title="Enter only alphabets" name="lastname" required pattern="[a-zA-Z]+" value="{{last_name}}">
                             </div>
                           </div>
                           <div class="col">
@@ -74,7 +73,6 @@
                               <label>Mobile</label>
                               <input class="form-control" type="text"  value="{{mobile}}" name="mobile">
                             </div>
-                          </div>
                           </div>
                         </div>
                         <div class="row">

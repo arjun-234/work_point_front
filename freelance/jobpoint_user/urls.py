@@ -8,7 +8,7 @@ urlpatterns = [
    path('qualificaton', views.qualificaton, name='qualificaton'),
    path('showexp', views.showexp, name='showexp'),
    path('update/<int:id>/', views.update, name='update'),
-    path('updateexp/<int:id>/', views.updateexp, name='updateexp'),
+   path('updateexp/<int:id>/', views.updateexp, name='updateexp'),
    path('makepraposal/<int:id>', views.makepraposal, name='makepraposal'),
    path('addexpirence', views.addexpirence, name='addexpirence'),
    path('dashboarduser', views.dashboarduser, name='dashboarduser'),
@@ -21,7 +21,7 @@ urlpatterns = [
    path('projectstatus',views.project_status,name='projectstatus'),
    path('updatestatus/<int:id>',views.project_status_update,name='updatestatus'),
    path('deletestatus/<int:id>',views.deletestatus,name='deletestatus'),
-    path('userchatbox/',views.userchatbox,name='userchatbox'),
-    path('userchatbox/<int:id>',views.userchatbox,name='userchatbox_id'),
+   path('userchatbox/',views.userchatbox,name='userchatbox'),
+   path('userchatbox/<int:id>',views.userchatbox,name='userchatbox_id'),
 
 ]
