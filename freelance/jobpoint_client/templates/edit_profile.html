@@ -66,20 +66,20 @@
               </ul>
               <div class="tab-content pt-3">
                 <div class="tab-pane active">
-                  <form method="POST" class="form" >
+                  <form method="POST" class="form" novalidate="">
                     {{edit_data}}
                     {% csrf_token %}
                     <div class="row">
                       <div class="col">
                         <div class="row">
                           <div class="col">
-                            <div class="control-group">
+                            <div class="form-group">
                               <label>First Name</label>
-                              <input name="fs_name" pattern="[a-zA-Z]+" class="form-control" type="text" title="Enter only alphabets" required value="{{first_name}}">
+                              <input name="fs_name" class="form-control" type="text"  value="{{first_name}}">
                             </div>
-                            <div class="control-group">
+                            <div class="form-group">
                               <label>Last Name</label>
-                              <input class="form-control" pattern="[a-zA-Z]+" type="text" name="lastname" title="Enter only alphabets" required value="{{last_name}}">
+                              <input class="form-control" type="text" name="lastname" value="{{last_name}}">
                             </div>
                           </div>
                           <div class="col">
@@ -87,13 +87,17 @@
                               <label>Username</label>
                               <input class="form-control" type="text"  value="{{username}}" disabled>
                             </div>
+                            <div class="form-group">
+                              <label>Mobile</label>
+                              <input class="form-control" type="text"  value="{{mobile}}" name="mobile">
+                            </div>
                           </div>
                         </div>
                         <div class="row">
                           <div class="col">
                             <div class="form-group">
                               <label>Email</label>
-                              <input class="form-control"  type="text" value="{{email}}" disabled>
+                              <input class="form-control" type="text" value="{{email}}" disabled>
                             </div>
                           </div>
                         </div>
@@ -101,7 +105,11 @@
                           <div class="col mb-3">
                             <div class="form-group">
                               <label>About</label>
+                              {% if about is None %}
+                              <textarea name="about" class="form-control" rows="5"></textarea>
+                              {% else %}
                               <textarea name="about" class="form-control" rows="5">{{about}}</textarea>
+                              {% endif %}
                             </div>
                           </div>
                         </div>
