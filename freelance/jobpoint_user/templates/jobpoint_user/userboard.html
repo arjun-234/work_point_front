@@ -21,21 +21,10 @@
         <h5 class="card-title"> Title : {{s.title}}</h5>
         <p class="card-text"><b>description</b> :{{s.description}}</p>
         <h5> Price : {{s.price}}</h5>
-        <div class="card-footer">
-                 
-          <a href="like/{{d.id}}" class="card-link">{{s.likes|length}}<i class="fa fa-gittip"></i> Like</a>
-        
-         <a href="dislike/{{d.id}}" class="card-link">{{s.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
-       
-          <a  href="makepraposal/{{s.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp; 
-        
-         
       </div>
-      </div>
-      
+     
     </div>
   </div>
-  <br><br><br>
   <br>
   {% endfor %}
 

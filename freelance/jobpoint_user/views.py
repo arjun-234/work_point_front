@@ -100,7 +100,7 @@ def dashboarduser(request):
     msg=""
     if 'username' in request.session:
         username=request.session['username']
-        job = f'{url}jobview'
+        job = f'{url}user_job_list'
         searchjob = f'{url}jobsearch'
         make_praposal = f'{url}make_praposal' 
         notify = f'{url}notification'
@@ -111,8 +111,8 @@ def dashboarduser(request):
             "username":request.session['username']
         }
         response = requests.post(url=job,headers=token,json=data)
-       
-        find = response.json()
+        print(response.json(),"@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        find = response.json()[::-1]
         # notification/////////////////////
 
         Ndata={
@@ -215,11 +215,11 @@ def showexp(request):
         
         response_qual = requests.get(url=qual,headers=token,json=data)
 
-        find_qual = response_qual.json()[::-1]
+        find_qual = response_qual.json()
         # print(find_qual)
         
         if response.status_code==200 and response_qual.status_code==200 :
-           return render(request,'jobpoint_user/expierence.html',{"username":username,"data":response.json()[::-1],"res":find_qual,"notify":request.session['view_notification']})
+           return render(request,'jobpoint_user/expierence.html',{"username":username,"data":response.json(),"res":find_qual,"notify":request.session['view_notification']})
         else:
             return redirect('dashboarduser')
        
@@ -235,10 +235,11 @@ def update(request,id):
         #print(id, "???")
         username=request.session['username']
         update = f'{url}userqualificationview/{id}'
+        print(update,"888888888")
         updateuser = f'{url}userqual/{id}'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
-              }
+              } 
         data={
         "username":request.session['username']
         }
@@ -246,7 +247,7 @@ def update(request,id):
        
         if response.status_code==200:   
             getdata = response.json()
-            print(getdata,"hjhjhhjh")
+            print(getdata,"jksjdskjdkjdkdjkdjksadkdjsjjdkjkajkasjksajkjdkdkdjkjksa")
             if request.method == 'POST':
                 print("calleddddd")
                 recent_degree=request.POST.get('degree')
@@ -273,7 +274,7 @@ def update(request,id):
         else:
             return redirect('dashboarduser')
         
-        return render(request,'jobpoint_user/updatequal.html',{"username":username,"data":getdata,"notify":request.session['view_notification']})
+        return render(request,'jobpoint_user/updatequal.html',{"username":username,"notify":request.session['view_notification']})
     else:
         return redirect('login')
   
@@ -481,23 +482,27 @@ def editprofileuser(request):
 
 def userupload(request):
     if request.method=="POST":
+        filextension=['jpg','jpeg','png']
         urls=f'{url}edit_profile'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
         uploaded_filename = request.FILES['document']
+        filename_new=uploaded_filename.name
+        filename_new=filename_new.replace(" ","_")
         fs=FileSystemStorage()
         fs.save(uploaded_filename.name,uploaded_filename)
-        print("AAAA",uploaded_filename)
-        data={
-            "username":request.session['username'],
-            "img_link":f'/static/media/{uploaded_filename}'
-        }
-        response=requests.put(url=urls,headers=token,json=data)
-        print(response.json(),"@@@@@@@@@@@@@@@@@@")
-        return redirect('editprofileuser')
-
-      
+        if filename_new.split('.')[-1] in filextension:
+            fs.save(filename_new,uploaded_filename)
+            data={
+                "username":request.session['username'],
+                "img_link":f'/static/media/{filename_new}'
+            }
+            response=requests.put(url=urls,headers=token,json=data)
+            return redirect('editprofileuser')
+        else:
+            messages.info(request,'Invalid Image Format')
+            return redirect('upload')
     return render(request,'jobpoint_user/upload.html')
 
 def like(request,id):
@@ -544,20 +549,17 @@ def logout(request):
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        print(urls, ">>>>")
         data={
-             "token":request.session['user_token'],
-            "username":request.session['username']
+                "username":request.session['username']
         }
         response=requests.post(url=urls,headers=token,json=data)
         print(response, "??")
         if response.status_code==200:
             del request.session['username']
             return redirect('login')
-           
-         
         else:
-            return HttpResponse("not Found")
+            return messages.info(request,"could'nt logout")
+            return redirect("dashboardclient")
     return redirect('login')
 
 #@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
