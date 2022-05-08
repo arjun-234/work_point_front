@@ -94,7 +94,8 @@ def index(request):
 #             messages.error(request, response.json()['msg'])
             
     
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def dashboarduser(request):
     msg=""
     if 'username' in request.session:
@@ -152,7 +153,8 @@ def dashboarduser(request):
     else:
         return redirect('login')
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def qualificaton(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -190,7 +192,8 @@ def qualificaton(request):
     else:
         return redirect('login')
     
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def showexp(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -225,7 +228,8 @@ def showexp(request):
     else:
         return redirect('login')
     
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+##@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+    
 def update(request,id):
     if 'username' in request.session:
         #print(id, "???")
@@ -274,7 +278,8 @@ def update(request,id):
         return redirect('login')
   
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def updateexp(request,id):
     if 'username' in request.session:
       
@@ -323,7 +328,8 @@ def updateexp(request,id):
 
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def addexpirence(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -356,7 +362,8 @@ def addexpirence(request):
     else:
         return redirect('login')
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)  
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+  
 def makepraposal(request,id):
     if 'username' in request.session:
         token={
@@ -389,7 +396,8 @@ def makepraposal(request,id):
         return render(request,'jobpoint_user/praposal.html',{"username":username})
     else:
         return redirect('login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)       
 def editprofileuser(request):
     if 'username' in request.session:
         urls=f'{url}user_details'
@@ -397,28 +405,16 @@ def editprofileuser(request):
         getskill = f'{url}skill_list'
 
         addskill = f'{url}add_user_skill'
+        
         token={
             'Authorization': f"Token {request.session['user_token']}"
             
         }
-
+        data={
+                    "username":request.session['username']
+                }
         response_skill = requests.get(url=getskill,headers=token)
         viewskill = response_skill.json()
-        skill_list=request.POST.getlist('checks[]')
-        skill_data={
-                "username":request.session['username'],
-                "skill_list":skill_list
-        }
-        add_skill_res=requests.post(url=addskill,json=skill_data)
-        print(viewskill,"?????????????")
-        
-        token={
-                'Authorization': f"Token {request.session['user_token']}"
-                
-            }
-        data={
-                "username":request.session['username']
-            }
         response=requests.post(urls,headers=token,json=data)
         response_data={
                     "first_name":response.json()["first_name"],
@@ -428,16 +424,40 @@ def editprofileuser(request):
                     "about":response.json()['about'],
                     "email":response.json()['email'],
                     "notify":request.session['view_notification'],
-                    "skill_data":viewskill
+                    "skill_data":viewskill,
+                    "mobile":response.json()['mobile'],
+                    "user_skill" : [i['name'] for i in response.json()['skill']]
         }
+        print(response_data)
         if request.method=='POST':
+            skill_list=request.POST.getlist('checks[]')
+            skill_data={
+                    "username":request.session['username'],
+                    "skill_list":skill_list
+            }
+            add_skill_res=requests.post(url=addskill,headers=token,json=skill_data)
+            print(viewskill,"?????????????")
+            
+            token={
+                    'Authorization': f"Token {request.session['user_token']}"
+                    
+                }
+            data={
+                    "username":request.session['username']
+                }
+            response=requests.post(urls,headers=token,json=data)
+            print(response.json(),"!!!!!")
             edit_url=f'{url}edit_profile'
+            token={
+                'Authorization': f"Token {request.session['user_token']}"
+            }
             if response.status_code==401:
                 return redirect("dashboarduser")
             else:
                 first_name=request.POST.get('fs_name')
                 last_name=request.POST.get('lastname')
                 about=request.POST.get('about')
+                mobile=request.POST.get('mobile')
                 user_name = request.session['username']
                 addskill = request.POST.getlist('check[]')
                 edit_data={
@@ -445,39 +465,20 @@ def editprofileuser(request):
                     "img_link":response.json()["img_link"],
                     "last_name":last_name,
                     "username":user_name,
-                    "about":about
+                    "about":about,
+                    "mobile":mobile
                     }
                 edit_response=requests.put(url=edit_url,headers=token,json=edit_data)
                 if edit_response.status_code==200:
-                    token={
-                            'Authorization': f"Token {request.session['user_token']}"
-                                    
-                            }
-                    data={
-                                    "username":request.session['username'],
-                                    # "skills" : addskill
-                        }
-                    updated_response=requests.post(urls,headers=token,json=data)
-                    updated_data={
-                        "first_name":updated_response.json()["first_name"],
-                        "img_link":updated_response.json()["img_link"],
-                        "last_name":updated_response.json()['last_name'],
-                        "username":updated_response.json()['username'],
-                        "about":updated_response.json()['about'],
-                        "email":response.json()['email'],
-                        "notify":request.session['view_notification'],
-                        "skill_data":viewskill,
-                        
-                    }
-
-                    return render(request,"jobpoint_user/editprofile.html",updated_data)
-
+                    messages.info(request,'Profile has been updated')
+                    return redirect('editprofileuser')
                 else:
                     print(edit_response.json()['msg'])
                     
         return render(request,"jobpoint_user/editprofile.html",response_data)
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def userupload(request):
     if request.method=="POST":
         urls=f'{url}edit_profile'
@@ -559,7 +560,8 @@ def logout(request):
             return HttpResponse("not Found")
     return redirect('login')
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def notification_view(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -611,7 +613,8 @@ def deletenotification(request,id):
             
             
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def project_status(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -634,7 +637,8 @@ def project_status(request):
             
     else:       
         return redirect('login')
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def  project_status_update(request,id):
     if 'username' in request.session:
         status_url= f"{url}showstatus/{id}"
@@ -686,7 +690,8 @@ def deletestatus(request,id):
 
 
 
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
+
 def userchatbox(request,id=None):
     if 'username' in request.session:
         if request.method == 'POST':

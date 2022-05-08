@@ -2,6 +2,15 @@
 <body>
     {% load static %}
 {% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <div class="col">
     <div class="row">
       <div class="col mb-3">
@@ -116,7 +125,8 @@
                             <br>
                             {% for m in skill_data  %}
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="checks[]" id="inlineCheckbox1" value="{{m.name}}">
+                            <input class="form-check-input" type="checkbox" name="checks[]" id="inlineCheckbox1" value="{{m.name}}" 
+                            {% if m.name in user_skill %} checked {% endif %}>
                             <label class="form-check-label" for="inlineCheckbox2">{{m.name}}</label>
                           </div>
 

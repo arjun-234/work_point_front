@@ -247,6 +247,7 @@ def editprofile(request):
                     # request.session['img_link']=updated_response.json()["img_link"]
                     # request.session['first_name']=updated_response.json()["first_name"]
                     request.session['img_link']=updated_response.json()["img_link"]
+                    messages.info(request,"profile has been updated")
                     return render(request,"edit_profile.html", updated_data)
                     # return redirect('dashboardclient')
                 else:
@@ -362,30 +363,31 @@ def editpost(request,id):
             }
             title=request.POST.get('job_title')
             desc=request.POST.get('job_desc')
-            posted_date=request.POST.get('posted_date')
             username=request.session['username']
             price=request.POST.get('price')
             skill_list=request.POST.getlist('checks[]')
             edit_data={
                     "title":title,
                     "description":desc,
-                    "posted_date":posted_date,
                     "username":username,
                     "price":price
                 }
-                
+            print(edit_data, "===", edit_post_url) 
             view_response=requests.put(url=edit_post_url,headers=token,json=edit_data)
+            print(view_response.json())
             if view_response.status_code==200:
                 skill_data={
                 "job":id,
                 "skill_list":skill_list
                         }
-                response=requests.post(url=skill_url,json=skill_data)
+                print(skill_data, "????????")
+                response=requests.post(url=skill_url,headers=token,json=skill_data)
+                print(response, "#####")
                 return redirect('dashboardclient')
             else:
                 messages.info(request,view_response.json()['msg'])
                 return redirect('dashboardclient')     
-        return render(request,"edit_post.html",{"view_data":get_edit_post,"username":request.session['username'],"data":skill_view_data})
+        return render(request,"edit_post.html",{"view_data":get_edit_post,"username":request.session['username'],"data":skill_view_data,"user_skill": [ i['name'] for i in get_edit_post['skill'] ] })
 
 def deletepost(request,id):
     if 'username' in request.session:
@@ -466,7 +468,6 @@ def chatbox(request,id=None):
                 first_name=None
 
         else:
-
             temp_list = [i['id'] for i in user_unique_list]
             if id not in temp_list:
                 request.session['msg_reciever_id'] = id
