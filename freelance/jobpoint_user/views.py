@@ -4,11 +4,10 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 import requests
 from django.core.files.storage import FileSystemStorage
-import json
+
 
 from freelance.local_settings import url
 
-from django.views.decorators.cache import cache_control
 
 
 
@@ -235,11 +234,10 @@ def update(request,id):
         #print(id, "???")
         username=request.session['username']
         update = f'{url}userqualificationview/{id}'
-        print(update,"888888888")
         updateuser = f'{url}userqual/{id}'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
-              } 
+              }
         data={
         "username":request.session['username']
         }
@@ -247,7 +245,7 @@ def update(request,id):
        
         if response.status_code==200:   
             getdata = response.json()
-            print(getdata,"jksjdskjdkjdkdjkdjksadkdjsjjdkjkajkasjksajkjdkdkdjkjksa")
+            print(getdata,"hjhjhhjh")
             if request.method == 'POST':
                 print("calleddddd")
                 recent_degree=request.POST.get('degree')
@@ -272,12 +270,9 @@ def update(request,id):
            
             return render(request,'jobpoint_user/updatequal.html',{"username":username,"data":getdata,"notify":request.session['view_notification']})
         else:
-            return redirect('dashboarduser')
-        
-        return render(request,'jobpoint_user/updatequal.html',{"username":username,"notify":request.session['view_notification']})
+            return render(request,'jobpoint_user/updatequal.html',{"username":username,"data":getdata,"notify":request.session['view_notification']})
     else:
         return redirect('login')
-  
 
 #@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 

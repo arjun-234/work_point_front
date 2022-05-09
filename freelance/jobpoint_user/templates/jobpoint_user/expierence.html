@@ -8,52 +8,45 @@
 <div class="container-fluid py-5" id="qualification">
     <div class="container">
         <div class="position-relative d-flex align-items-center justify-content-center">
-         
-            <h1 class="position-fixed text-uppercase text-success mb-5">Education & Expericence </h1>
+            <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Quality</h1>
+            <h1 class="position-absolute text-uppercase text-success">Education & Expericence</h1>
         </div>
         <div class="row align-items-center">
-            <div class="col-lg-6 " >
-                <h3 class="mb-0 position-relative">My Education</h3>
-                {% if not res %}
-                <a href = "{% url 'qualificaton'%}">Add</a>
-                {% else %}
-             
-                <div class="border-left border-primary pt-2 pl-4 ml-2">
-                    <div class="position-relative">
-                        <i class="far fa-dot-circle text-primary position-absolute " style="top: 2px; left: -32px;"></i>
+            <div class="col-lg-6">
+                <h3 class="mb-4">My Education</h3>
+                 {% if not res %}
+                        <a href = "{% url 'qualificaton'%}">Add</a>
+                        {% else %}
+                    <div class="border-left border-success pt-2 pl-4 ml-2">
+                    <div class="position-relative mb-4">
                         {% for r in res %}
-
-                        <h5 class="font-weight-bold mt-5 "> Degree : {{r.recent_degree}}</h5>
+                        <i class="far fa-dot-circle text-success position-absolute" style="top: 2px; left: -32px;"></i>
+                        <h5 class="font-weight-bold mb-2 "> Degree : {{r.recent_degree}}</h5>
+                        <p class="mb-2"><strong> CPI : {{r.cpi}}</strong>
                         <p class="mb-2"><strong> University : {{r.university}}</strong> | <b>Passing year </b>: <small>{{r.passing_year}}</small></p>
                         <p> <b>About </b> : {{r.about}}</p>
                        
-                        <small> <a href="update/{{r.id}}" class="btn btn-outline-success"> Update</a></small>
+                        <small> <a href="update/{{r.id}}" class="btn btn-outline-success"> Update</a></small><br><br><br>
                         {% endfor %}
                         {% endif %}
-                        <!-- <small> <a href="qualification" class="nav-item nav-link active">Add</a></small> -->
-                        
+                        <!-- <small> <a href="qualification" class="nav-item nav-link active">Add</a></small> -->    
                     </div>
                     
                 </div>
             </div>
-            <div class="col-lg-4 mb-1">
-                <h3 class="position-relative">My Expericence </h3>
-                <div class="border-left border-primary pt-1 pl-4  mt-4" >
+            <div class="col-lg-6">
+                <h3 class="mb-4">My Expericence</h3>
                     {% if not data %}
-                    <a href = "{% url 'addexpirence'%}">Add</a>
+                        <a href = "{% url 'addexpirence'%}">Add</a>
                     {% else %}
-                    
-                    {% for d in data %}
-                   
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                      
-                      <br>
-                     
-                        <h5 class="font-weight-bold mb-1"> Previous job : {{d.previous_job}}</h5>
-                        <p class="mb-2"><strong> previous_company : {{d.previous_compny}} </strong> | Experience year : <small>{{d.experience_year}}</small></p>
-                        <p class="mb-2">About : {{d.about}}  | <small> <a  href = "updateexp/{{d.id}}" style="color: red;" href=""> Update</a></small></p> 
-                       
+                    <div class="border-left border-success pt-2 pl-4 ml-2">
+                        <div class="position-relative mb-4">
+                            {% for d in data %}
+                                <i class="far fa-dot-circle text-success position-absolute" style="top: 2px; left: -32px;"></i>    
+                                <h5 class="font-weight-bold mb-1"> Previous job : {{d.previous_job}}</h5>
+                                <p class="mb-2"><strong> previous_company : {{d.previous_compny}} </strong> | Experience year : <small>{{d.experience_year}}</small></p>
+                                <p class="mb-2">About : {{d.about}}  | <small> <a  href = "updateexp/{{d.id}}" style="color: red;" href=""> Update</a></small></p> <br><br>
+                            
                             {% endfor %}
                      {% endif %}
                     </div>
@@ -65,6 +58,5 @@
 </div>
 <!-- Qualification End -->
 {% endblock %}    
-  </body>
 
   
