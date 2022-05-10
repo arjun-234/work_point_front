@@ -4,7 +4,7 @@ urlpatterns = [
    path('index', views.index, name='index'),
 #    path('signup', views.signup, name='signup'),
 #    path('login', views.login, name='login'),
-   path('logout', views.logout, name='logout'),
+   path('user_logout', views.user_logout, name='user_logout'),
    path('qualificaton', views.qualificaton, name='qualificaton'),
    path('showexp', views.showexp, name='showexp'),
    path('update/<int:id>/', views.update, name='update'),
@@ -23,5 +23,7 @@ urlpatterns = [
    path('deletestatus/<int:id>',views.deletestatus,name='deletestatus'),
    path('userchatbox/',views.userchatbox,name='userchatbox'),
    path('userchatbox/<int:id>',views.userchatbox,name='userchatbox_id'),
+   path('delqual/<int:id>',views.deletequalification,name='delqual'),
+   path('delexp/<int:id>',views.deleteexp,name='delexp'),
 
 ]

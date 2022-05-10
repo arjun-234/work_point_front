@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block base %}
-
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+    
+        <div style="background-color: antiquewhite;">
+    
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </p>
+        
+        
+        {% endfor %}
+      </ul>
+      {% endif %}
 <div class="container-fluid py-5" id="contact">
     <div class="container">
                     <form method="POST" style="margin:150px; margin-top: 50px;">
@@ -21,7 +41,8 @@
                         <!-- price input -->
                         <div class="form-outline mb-4">
                             <label>Price</label>
-                            <input type="text" id="form4Example2" name="price" class="form-control" value="{{view_data.price}}"/>
+                            <input type="number" min="10" max="10000" id="form4Example2" name="price" class="form-control" value="{{view_data.price}}" required title="Please enter Price"/>
+                              
                           
                         </div>
                       

@@ -339,6 +339,7 @@
       {% endif %}
       {% if user.id|divisibleby:2 == 0 %}<hr style="border-color: #E4E8ED;">{% else %}<hr class="hr-2" style="border-color: #7C8097;">{% endif %}
       {% if user.id|divisibleby:2 == 0 %}<h5 class="title">{{user.first_name}} {{user.last_name}}</h5>{% else %}<h5 class="title-2">{{user.first_name}} {{user.last_name}}</h5>{% endif %}
+      {% if user.id|divisibleby:2 == 0 %}<p class="title">@{{user.username}}</p>{% else %}<p class="title-2">@{{user.username}}</p>{% endif %}
       <a href="/user_profile/{{user.id}}"><button class="btn btn-primary top ">Profile</button></a>
       {% if user.id|divisibleby:2 == 0 %}<hr style="border-color: #E4E8ED;">{% else %}<hr class="hr-2" style="border-color: #7C8097;">{% endif %}
   </div>

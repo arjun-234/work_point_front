@@ -4,96 +4,10 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 import requests
 from django.core.files.storage import FileSystemStorage
-
-
 from freelance.local_settings import url
 
-
-
-
-# Create your views here.
 def index(request):
     return render(request,'jobpoint_user/index.html')
-
-# def signup(request):
-#     url2 = f'{url}register'
-#     if request.method == 'POST':
-#         first_name = request.POST.get('firstname')
-#         last_name = request.POST.get('lastname')
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         email = request.POST.get('email')
-#         mobile = request.POST.get('mobile')
-#         gender = request.POST.get('gender')
-#         country = request.POST.get('country')
-#         role = request.POST.get('role')
-        
-#         data = {
-#         "first_name":first_name,
-#         "last_name":last_name,
-#         "username":username,
-#         "password":password,
-#         "email":email,
-#         "mobile":mobile,
-#         "gender":gender,
-#         "country":country,
-#         "is_client":role,
-        
-#         }
-        
-#         response = requests.post(url=url2,json=data)
-#         print(response)
-#         if response.status_code==200:
-#              return redirect('login')
-#         else:
-#             return redirect('signup')
-#     return render(request,'jobpoint_user/signup.html')
-
-# def login(request):
-#     if request.method=='POST':
-#         username=request.POST['username']
-#         password=request.POST['password']
-#         urls=f'{url}login'
-#         print(urls)
-       
-#         request.session['username']=username
-#         data={
-#             "username":username,
-#             "password":password,
-#         }
-#         print("@@@@@@@@@@@@@@@@@@@@@@@@@@",data)
-#         response=requests.post(url=urls,json=data)
-        
-#         print("//////////",response.status_code)
-#         if response.status_code==200:
-#             request.session['user_token']=response.json()['token']
-#             request.session['username']=response.json()['username']
-#             verify_url=f'{url}verify_token'
-#             data_token={
-#                 "token":request.session['user_token'],
-#                 "username":request.session['username'],
-               
-#             }
-#             print("yyyyyyyy",data_token)
-#             response_token=requests.post(url=verify_url,json=data_token)
-#             print(response_token,"OOOOOOOO")
-#             if response_token.json()['matched']:
-#                 if response.json()["is_client"]:
-#                     return redirect('login')    
-#                 else:
-#                     dic={
-#                         "username":response.json()['username'],
-#                         "img_link":response.json()["img_link"]
-#                     }
-#                     print(dic)
-#                     return redirect('dashboarduser')
-#             else:
-#                 messages.error(request,response_token.json()['msg'])
-#         else:
-#             messages.error(request, response.json()['msg'])
-            
-    
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
 def dashboarduser(request):
     msg=""
@@ -367,6 +281,13 @@ def makepraposal(request,id):
               }
         username=request.session['username']
         praposal = f'{url}make_proposal'
+        get_price=f'{url}jobdetails'
+        price_data={
+                    "username":username,
+                    "job":id
+        }
+        price_resposnse=requests.post(url=get_price,headers=token,json=price_data)
+        price_resposnse=price_resposnse.json()['price']
         print(praposal,"----------")
         if request.method == "POST":
             print("ooooooooo")
@@ -382,14 +303,15 @@ def makepraposal(request,id):
             }
             print(data)
             response = requests.post(url=praposal,headers=token,json=data)
+            print(response.status_code,"@@@@@@@@@@@@")
           
             if response.status_code==200:
                 msg = "your proposal has been send"
-                return render(request,'jobpoint_user/praposal.html',{"username":username,"msg":msg,"notify":request.session['view_notification']})
+                return render(request,'jobpoint_user/praposal.html',{"username":username,"msg":msg,"notify":request.session['view_notification'],"pro_price":price_resposnse})
             else:
                 msg = "your proposal has not been send"
-                return render(request,'jobpoint_user/praposal.html',{"username":username,"msg":msg,"notify":request.session['view_notification']})
-        return render(request,'jobpoint_user/praposal.html',{"username":username})
+                return render(request,'jobpoint_user/praposal.html',{"username":username,"msg":msg,"notify":request.session['view_notification'],"pro_price":price_resposnse})
+        return render(request,'jobpoint_user/praposal.html',{"username":username,"pro_price":price_resposnse})
     else:
         return redirect('login')
 
@@ -472,33 +394,38 @@ def editprofileuser(request):
                     print(edit_response.json()['msg'])
                     
         return render(request,"jobpoint_user/editprofile.html",response_data)
+    else:
+        return redirect("login")
 
 #@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
 def userupload(request):
-    if request.method=="POST":
-        filextension=['jpg','jpeg','png']
-        urls=f'{url}edit_profile'
-        token={
-                'Authorization': f"Token {request.session['user_token']}"
-              }
-        uploaded_filename = request.FILES['document']
-        filename_new=uploaded_filename.name
-        filename_new=filename_new.replace(" ","_")
-        fs=FileSystemStorage()
-        fs.save(uploaded_filename.name,uploaded_filename)
-        if filename_new.split('.')[-1] in filextension:
-            fs.save(filename_new,uploaded_filename)
-            data={
-                "username":request.session['username'],
-                "img_link":f'/static/media/{filename_new}'
-            }
-            response=requests.put(url=urls,headers=token,json=data)
-            return redirect('editprofileuser')
-        else:
-            messages.info(request,'Invalid Image Format')
-            return redirect('upload')
-    return render(request,'jobpoint_user/upload.html')
+    if 'username' in request.session:
+        if request.method=="POST":
+            filextension=['jpg','jpeg','png']
+            urls=f'{url}edit_profile'
+            token={
+                    'Authorization': f"Token {request.session['user_token']}"
+                }
+            uploaded_filename = request.FILES['document']
+            filename_new=uploaded_filename.name
+            filename_new=filename_new.replace(" ","_")
+            fs=FileSystemStorage()
+            fs.save(uploaded_filename.name,uploaded_filename)
+            if filename_new.split('.')[-1] in filextension:
+                fs.save(filename_new,uploaded_filename)
+                data={
+                    "username":request.session['username'],
+                    "img_link":f'/static/media/{filename_new}'
+                }
+                response=requests.put(url=urls,headers=token,json=data)
+                return redirect('editprofileuser')
+            else:
+                messages.info(request,'Invalid Image Format')
+                return redirect('upload')
+        return render(request,'jobpoint_user/upload.html')
+    else:
+        return redirect('login')
 
 def like(request,id):
     if 'username' in request.session:
@@ -518,6 +445,8 @@ def like(request,id):
             return redirect('dashboarduser')
         else:
             return redirect('showexp')
+    else:
+        return redirect("login")
 
 def dislike(request,id):
     if 'username' in request.session:
@@ -537,8 +466,10 @@ def dislike(request,id):
             return redirect('dashboarduser')
         else:
             return redirect('showexp')
+    else:
+        return redirect('login')
         
-def logout(request):
+def user_logout(request):
     if 'username' in request.session:
         urls=f'{url}logout'
         token={
@@ -553,9 +484,10 @@ def logout(request):
             del request.session['username']
             return redirect('login')
         else:
-            return messages.info(request,"could'nt logout")
-            return redirect("dashboardclient")
-    return redirect('login')
+            messages.info(request,"could'nt logout")
+            return redirect("dashboarduser")
+    else:
+        return redirect('login')
 
 #@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
@@ -708,7 +640,7 @@ def userchatbox(request,id=None):
             else:
                 print(response)
             id = request.session['msg_reciever_id']
-            return redirect('chatbox_id',id)
+            return redirect('userchatbox_id',id)    
         #chatlist
         urls=f'{url}chat_list'
         token={
@@ -745,10 +677,12 @@ def userchatbox(request,id=None):
                 id = user_unique_list[0]['id']
                 img_link = user_unique_list[0]['img_link']
                 first_name = user_unique_list[0]['first_name']
+                user_name=user_unique_list[0]['username']
                 request.session['msg_reciever_id'] = id
             except:
                 img_link=None
                 first_name=None
+                user_name=None
 
         else:
 
@@ -765,6 +699,7 @@ def userchatbox(request,id=None):
                 get_user_detail_response = requests.post(url=get_user_detail_url,headers=token,json=data)
                 img_link = get_user_detail_response.json()['img_link']
                 first_name = get_user_detail_response.json()['first_name']
+                user_name = get_user_detail_response.json()['username']
 
             else:
                 clear_msg_count_url =f'{url}clear_message_count'
@@ -783,10 +718,12 @@ def userchatbox(request,id=None):
                         if i['reciever']['id'] == id:
                             img_link = i['reciever']['img_link']
                             first_name = i['reciever']['first_name']
+                            user_name = i['reciever']['username']
                     else:
                         if i['sender']['id'] == id:
                             img_link = i['sender']['img_link']
                             first_name = i['sender']['first_name']
+                            user_name = i['sender']['username']
 
         # print(msg_counter_response.json())
         for i in user_unique_list:
@@ -796,8 +733,52 @@ def userchatbox(request,id=None):
 
         
 
-        return render(request,"jobpoint_user/userchatbox.html",{"username":request.session['username'],"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json(),"notify":request.session['view_notification']})
+        return render(request,"jobpoint_user/userchatbox.html",{"username":request.session['username'],"user_name":user_name,"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json(),"notify":request.session['view_notification']})
     else:
         return redirect("login")
 
 
+
+def deletequalification(request,id):
+    if 'username' in request.session:
+        qualifications_url= f"{url}userqualdel/{id}"
+        token={
+                'Authorization': f"Token {request.session['user_token']}"
+              }
+        
+        response = requests.delete(url=qualifications_url,headers=token) #url= notify_url
+       
+      
+        if response.status_code == 200:
+            msg = "data deleted"
+            return redirect('showexp')
+            
+        else:
+            msg = "not deleted"
+            return HttpResponse(msg)
+            
+    else:       
+        return redirect('login')
+
+
+
+
+def deleteexp(request,id):
+    if 'username' in request.session:
+        exp_url= f"{url}userexpdel/{id}"
+        token={
+                'Authorization': f"Token {request.session['user_token']}"
+              }
+        
+        response = requests.delete(url=exp_url,headers=token) #url= notify_url
+        
+        if response.status_code == 200:
+            msg = "data deleted"
+            return redirect('showexp')
+            
+        else:
+            msg = "not deleted"
+            return HttpResponse(msg)
+            
+    else:       
+        return redirect('login')

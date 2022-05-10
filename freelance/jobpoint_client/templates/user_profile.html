@@ -408,6 +408,28 @@
     }
 
 </style>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+    
+        <div style="background-color: antiquewhite;">
+    
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </p>
+        
+        
+        {% endfor %}
+      </ul>
+      {% endif %}
+
 {% for i in data %}
 <div class="container bootstrap snippets bootdey">
     <div class="row">
@@ -422,7 +444,7 @@
                       {% endif %}
                   </a>
                   <h1 style="color:white;"> {{i.first_name}}</h1>
-                  <p>{{i.email}}</p>
+                  <h3><p>@{{i.username}}</p></h3>
               </div>
               <ul class="nav nav-pills nav-stacked">
                   <a href="/chatbox/{{i.id}}"><button class="btn btn-primary top left" style="margin-top:10px;">Message</button></a>
@@ -463,15 +485,53 @@
       </div>
     </div>
     </div>
-    <br>
-    <br>
-    <br>
+{% if i.userqual|length != 0 or i.userexp|length != 0 %}
 
+        <!-- Qualification Start -->
+        <div class="container-fluid py-5" id="qualification">
+            <div class="container">
+                <div class="position-relative d-flex align-items-center justify-content-center">
+                    <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Quality</h1>
+                    <h1 class="position-absolute text-uppercase text-primary">Education & Expericence</h1>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        {% if i.userqual|length != 0 %}
+                        <h3 class="mb-4">My Education</h3>
+                        <div class="border-left border-primary pt-2 pl-4 ml-2">
+                            {% for k in i.userqual %}
+                            <div class="position-relative mb-4">
+                                <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
+                                <h5 class="font-weight-bold mb-1">{{k.recent_degree}}</h5>
+                                <p class="mb-2"><strong>{{k.university}}</strong> | <small>{{k.passing_year}}</small></p>
+                                <p>{{k.about}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-6">
+                        {%if i.userexp|length != 0 %}
+                        <h3 class="mb-4">My Expericence</h3>
+                        <div class="border-left border-primary pt-2 pl-4 ml-2">
+                            {% for m in i.userexp %}
+                            <div class="position-relative mb-4">
+                                <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
+                                <h5 class="font-weight-bold mb-1">{{m.previous_job}}</h5>
+                                <p class="mb-2"><strong>{{m.previous_compny}}</strong> | <small>{{m.experience_year}}</small></p>
+                                <p>{{m.about}}</p>
+                            </div>
+                            {% endfor %}  
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    {% endfor %}
+{% endif %}
 
-
-
+{% endfor %}
 
 
 {% endblock base %}

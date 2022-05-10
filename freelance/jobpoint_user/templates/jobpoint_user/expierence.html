@@ -26,7 +26,9 @@
                         <p class="mb-2"><strong> University : {{r.university}}</strong> | <b>Passing year </b>: <small>{{r.passing_year}}</small></p>
                         <p> <b>About </b> : {{r.about}}</p>
                        
-                        <small> <a href="update/{{r.id}}" class="btn btn-outline-success"> Update</a></small><br><br><br>
+                        <small> <a href="update/{{r.id}}" class="btn btn-outline-success"> Update</a></small><br>
+                        <small> <a href="delqual/{{r.id}}"   class="btn btn-outline-danger" > Delete</a></small>
+                        <br><br>
                         {% endfor %}
                         {% endif %}
                         <!-- <small> <a href="qualification" class="nav-item nav-link active">Add</a></small> -->    
@@ -46,6 +48,10 @@
                                 <h5 class="font-weight-bold mb-1"> Previous job : {{d.previous_job}}</h5>
                                 <p class="mb-2"><strong> previous_company : {{d.previous_compny}} </strong> | Experience year : <small>{{d.experience_year}}</small></p>
                                 <p class="mb-2">About : {{d.about}}  | <small> <a  href = "updateexp/{{d.id}}" style="color: red;" href=""> Update</a></small></p> <br><br>
+                                <small> <a href="delexp/{{d.id}}" class="btn btn-outline-danger" ;> Delete</a></small>
+
+
+
                             
                             {% endfor %}
                      {% endif %}

@@ -257,10 +257,11 @@
                   <a href="/chatbox/{{i.id}}"><span><span>{{i.first_name}} {{i.last_name}}</span></a>
                   {% if i.count != 0 %}
                   {% if i.count %}
-                  <p>{{i.count}} New Messages</p>
+                  <p>@{{i.username}} | <b>{{i.count}}</b> New Messages</p>
+                  {% else %}
+                  <p>@{{i.username}}</p>
                   {% endif %}
-                  {% endif %}
-
+                  {% endif %} 
                 </div>
               </div>
             </li>
@@ -286,6 +287,7 @@
                 </div>
                 <div class="user_info">
                   <span>Chat with {{first_name}}</span>
+                  <p>@{{user_name}}</p>
                 </div>
               </div>
             </div>

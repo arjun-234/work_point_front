@@ -84,7 +84,7 @@ def register(request):
             messages.info(request,response.json()['msg'])
             return redirect("login")
         else:
-            messages.info(request,response.json())
+            messages.info(request,response.json()['msg'])
             return redirect('register')
             
     return render(request,'Register_client.html')
@@ -114,7 +114,7 @@ def dashboard_client(request):
             "username":request.session['username']
         }
         response=requests.post(url=urls,headers=token,json=data)
-        response_data=response.json()
+        response_data=response.json()[::-1]
         return render(request,"client_dashboard.html",{"data":response_data,"username":username,"notification_list":notification_list})
     else:
         return redirect("login")
@@ -253,6 +253,8 @@ def editprofile(request):
                     print(edit_response.json()['msg'])
         print(response_data)
         return render(request,"edit_profile.html",response_data)
+    else:
+        return redirect("login")
 
 
 
@@ -301,6 +303,8 @@ def makepost(request):
                 return redirect('makepost')
 
         return render(request,"make_post.html",{"data":skill_view_data,"username":request.session['username']})
+    else:
+        return redirect("login")
 
 
 
@@ -315,36 +319,41 @@ def logout(request):
         }
         response=requests.post(url=urls,headers=token,json=data)
         if response.status_code==200:
-            del request.session['username']          
+            del request.session['username']
+            return redirect('login')          
         else:
-            return messages.info(request,"could'nt logout")
+            messages.info(request,"could'nt logout")
             return redirect("dashboardclient")
-    return redirect('login')
+    else:
+        return redirect('login')
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def upload(request):
-    if request.method=="POST":
-        filextension=['jpg','jpeg','png']
-        urls=f'{url}edit_profile'
-        token={
-                'Authorization': f"Token {request.session['user_token']}"
-              }
-        uploaded_filename = request.FILES['document']
-        filename_new=uploaded_filename.name
-        filename_new=filename_new.replace(" ","_")
-        fs=FileSystemStorage()
-        if filename_new.split('.')[-1] in filextension:
-            fs.save(filename_new,uploaded_filename)
-            data={
-                "username":request.session['username'],
-                "img_link":f'/static/media/{filename_new}'
-            }
-            response=requests.put(url=urls,headers=token,json=data)
-            return redirect('editprofile')
-        else:
-            messages.info(request,'Invalid Image Format')
-            return redirect('upload_file')
-    return render(request,'upload_file.html',{"username":request.session['username']})
+    if 'username' in request.session:
+        if request.method=="POST":
+            filextension=['jpg','jpeg','png']
+            urls=f'{url}edit_profile'
+            token={
+                    'Authorization': f"Token {request.session['user_token']}"
+                }
+            uploaded_filename = request.FILES['document']
+            filename_new=uploaded_filename.name
+            filename_new=filename_new.replace(" ","_")
+            fs=FileSystemStorage()
+            if filename_new.split('.')[-1] in filextension:
+                fs.save(filename_new,uploaded_filename)
+                data={
+                    "username":request.session['username'],
+                    "img_link":f'/static/media/{filename_new}'
+                }
+                response=requests.put(url=urls,headers=token,json=data)
+                return redirect('editprofile')
+            else:
+                messages.info(request,'Invalid Image Format')
+                return redirect('upload_file')
+        return render(request,'upload_file.html',{"username":request.session['username']})
+    else:
+        return redirect('login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def editpost(request,id):
     if 'username' in request.session:
@@ -385,13 +394,12 @@ def editpost(request,id):
                 }
             print(edit_data, "===", edit_post_url) 
             view_response=requests.put(url=edit_post_url,headers=token,json=edit_data)
-            print(view_response.json())
             if view_response.status_code==200:
                 skill_data={
                 "job":id,
                 "skill_list":skill_list
                         }
-                print(skill_data, "????????")
+            
                 response=requests.post(url=skill_url,headers=token,json=skill_data)
                 print(response, "#####")
                 return redirect('dashboardclient')
@@ -399,7 +407,8 @@ def editpost(request,id):
                 messages.info(request,view_response.json()['msg'])
                 return redirect('dashboardclient')     
         return render(request,"edit_post.html",{"view_data":get_edit_post,"username":request.session['username'],"data":skill_view_data,"user_skill": [ i['name'] for i in get_edit_post['skill'] ] })
-
+    else:
+        return redirect('login')
 def deletepost(request,id):
     if 'username' in request.session:
         delete_url=f'{url}delete_job/{id}'
@@ -415,6 +424,8 @@ def deletepost(request,id):
         else:
             messages.info(request,response.json()['msg'])
             return redirect('dashboardclient')
+    else:
+        return redirect('login')
             
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def chatbox(request,id=None):
@@ -473,10 +484,12 @@ def chatbox(request,id=None):
                 id = user_unique_list[0]['id']
                 img_link = user_unique_list[0]['img_link']
                 first_name = user_unique_list[0]['first_name']
+                user_name = user_unique_list[0]['username']
                 request.session['msg_reciever_id'] = id
             except:
                 img_link=None
                 first_name=None
+                user_name=None
 
         else:
             temp_list = [i['id'] for i in user_unique_list]
@@ -492,6 +505,7 @@ def chatbox(request,id=None):
                 get_user_detail_response = requests.post(url=get_user_detail_url,headers=token,json=data)
                 img_link = get_user_detail_response.json()['img_link']
                 first_name = get_user_detail_response.json()['first_name']
+                user_name=get_user_detail_response.json()['username']
 
             else:
                 clear_msg_count_url =f'{url}clear_message_count'
@@ -510,10 +524,12 @@ def chatbox(request,id=None):
                         if i['reciever']['id'] == id:
                             img_link = i['reciever']['img_link']
                             first_name = i['reciever']['first_name']
+                            user_name = i['reciever']['username']
                     else:
                         if i['sender']['id'] == id:
                             img_link = i['sender']['img_link']
                             first_name = i['sender']['first_name']
+                            user_name = i['sender']['username']
 
         # print(msg_counter_response.json())
         for i in user_unique_list:
@@ -523,7 +539,7 @@ def chatbox(request,id=None):
 
         
 
-        return render(request,"chatbox.html",{"username":request.session['username'],"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json()})
+        return render(request,"chatbox.html",{"username":request.session['username'],"user_name":user_name,"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json()})
     else:
         return redirect("login")
 
@@ -596,9 +612,9 @@ def accept_reject_proposal(request,id):
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def proposal_notification(request,userid_jobid):
-    proposer_id = int(userid_jobid.split('_')[0])
-    job_id = int(userid_jobid.split('_')[1])
     if 'username' in request.session:
+        proposer_id = int(userid_jobid.split('_')[0])
+        job_id = int(userid_jobid.split('_')[1])
         urls=f'{url}proposal_detail/{job_id}'
         token={
                 'Authorization': f"Token {request.session['user_token']}"  

@@ -24,7 +24,7 @@
            
             <div class="control-group ">
                 <label  style="margin-right:790px;"><b>Price</b></label>
-                <input pattern="[^0][0-9]+" type="text" name="price" class="form-control p-4" id="" placeholder="Your Price"
+                <input type="number" min="10" max="{{pro_price}}"  name="price" class="form-control p-4" id="" placeholder="Your Price"
                     required />
                 <p class="help-block text-danger"></p>
                 <input type="submit" class="btn btn-success" value="Submit" style="margin-left:300px;" >
