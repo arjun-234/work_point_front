@@ -256,9 +256,12 @@
                 </div>
                 <div class="user_info">
                   <a href="/userchatbox/{{i.id}}"><span><span>{{i.first_name}} {{i.last_name}}</span></a>
+                  {% if i.count is 0 or i.count is None %}
+                  <p>@{{i.username}}</p>
+                  {% endif %}                  
                   {% if i.count != 0 %}
                   {% if i.count %}
-                  <p>{{i.count}} New Messages</p>                
+                  <p>@{{i.username}} | {{i.count}} New Messages</p>
                   {% endif %}
                   {% endif %} 
                 </div>
