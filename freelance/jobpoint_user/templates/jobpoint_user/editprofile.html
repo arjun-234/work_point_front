@@ -71,7 +71,8 @@
                             </div>
                             <div class="form-group">
                               <label>Mobile</label>
-                              <input class="form-control" type="text"  value="{{mobile}}" name="mobile">
+          
+                              <input pattern="^(((\+?\(91\))|0|((00|\+)?91))-?)?[7-9]\d{9}$" maxlength="10" title="Phone number must be of only 10 digits" class="form-control" type="text"  value="{{mobile}}" name="mobile">
                             </div>
                           </div>
                         </div>
