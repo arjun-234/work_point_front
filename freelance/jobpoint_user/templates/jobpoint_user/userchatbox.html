@@ -255,14 +255,15 @@
                   {% endif %}
                 </div>
                 <div class="user_info">
-                  <a href="/userchatbox/{{i.id}}"><span><span>{{i.first_name}} {{i.last_name}}</span></a>
-                  {% if i.count is 0 or i.count is None %}
-                  <p>@{{i.username}}</p>
-                  {% endif %}                  
+                  <a href="/chatbox/{{i.id}}"><span><span>{{i.first_name}} {{i.last_name}}</span></a>
                   {% if i.count != 0 %}
                   {% if i.count %}
-                  <p>@{{i.username}} | {{i.count}} New Messages</p>
+                  <p>@{{i.username}} |<b> {{i.count}} New Messages</b></p>
+                  {% else %}
+                  <p>@{{i.username}}</p>
                   {% endif %}
+                  {% else %}
+                  <p>@{{i.username}}</p>
                   {% endif %} 
                 </div>
               </div>
@@ -368,9 +369,4 @@
     myDiv.scrollTop = myDiv.scrollHeight;
     }
     </script>
-
-
-
-
-
-  {% endblock content %}
+{% endblock content %}
