@@ -468,11 +468,13 @@
                       <div class="bio-row">
                           <p><span>Country </span>: {{i.country}}</p>
                       </div>
-                      {% for j in i.skill %}
+                     
                       <div class="bio-row">
-                          <p><span>Skill</span>: {{j.name}}</p>
+                        
+                          <p><span>Skill</span>: {% for j in i.skill %}{{j.name}}, {% endfor %}</p>
+                          
                       </div>
-                      {% endfor %}
+                      
                       <div class="bio-row">
                           <p><span>Email </span>: {{i.email}}</p>
                       </div>
