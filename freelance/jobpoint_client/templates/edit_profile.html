@@ -48,8 +48,8 @@
                   <div class="mx-auto" style="width: 140px;">
                     <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
                       <form method="POST" class="form" >
-                        {% if img_link is not None %}
-                          <img name="image" src="{{img_link}}" height="mx-auto" width="140px;">
+                        {% if response_data.img_link is not None %}
+                          <img name="image" src="{{response_data.img_link}}" height="mx-auto" width="140px;">
                         {% else %}
                           <img src="{% static 'img/default.png' %}" height="mx-auto" width="140px;">
                         {% endif %}
@@ -59,8 +59,8 @@
                 </div>
                 <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                   <div class="text-center text-sm-left mb-2 mb-sm-0">
-                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{first_name}}</h4>
-                    <p class="mb-0">@{{username}}</p>
+                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{response_data.first_name}}</h4>
+                    <p class="mb-0">@{{response_data.username}}</p>
                     
                     <div class="mt-2">
                       <button onclick="location.href = '/upload_file'" class="btn btn-primary" type="button">
@@ -89,21 +89,21 @@
                           <div class="col">
                             <div class="form-group">
                               <label>First Name</label>
-                              <input name="fs_name" class="form-control" type="text"  value="{{first_name}}">
+                              <input name="fs_name" class="form-control" type="text"  value="{{response_data.first_name}}">
                             </div>
                             <div class="form-group">
                               <label>Last Name</label>
-                              <input class="form-control" type="text" name="lastname" value="{{last_name}}">
+                              <input class="form-control" type="text" name="lastname" value="{{response_data.last_name}}">
                             </div>
                           </div>
                           <div class="col">
                             <div class="form-group">
                               <label>Username</label>
-                              <input class="form-control" type="text"  value="{{username}}" disabled>
+                              <input class="form-control" type="text"  value="{{response_data.username}}" disabled>
                             </div>
                             <div class="form-group">
                               <label>Mobile</label>
-                              <input pattern="^(((\+?\(91\))|0|((00|\+)?91))-?)?[7-9]\d{9}$" maxlength="10" title="Phone number must be of only 10 digits" class="form-control" type="text"  value="{{mobile}}" name="mobile">
+                              <input pattern="^(((\+?\(91\))|0|((00|\+)?91))-?)?[7-9]\d{9}$" maxlength="10" title="Phone number must be of only 10 digits" class="form-control" type="text"  value="{{response_data.mobile}}" name="mobile">
                             </div>
                           </div>
                         </div>
@@ -111,7 +111,7 @@
                           <div class="col">
                             <div class="form-group">
                               <label>Email</label>
-                              <input class="form-control" type="text" value="{{email}}" disabled>
+                              <input class="form-control" type="text" value="{{response_data.email}}" disabled>
                             </div>
                           </div>
                         </div>
@@ -119,10 +119,10 @@
                           <div class="col mb-3">
                             <div class="form-group">
                               <label>About</label>
-                              {% if about is None %}
+                              {% if response_data.about is None %}
                               <textarea name="about" class="form-control" rows="5"></textarea>
                               {% else %}
-                              <textarea name="about" class="form-control" rows="5">{{about}}</textarea>
+                              <textarea name="about" class="form-control" rows="5">{{response_data.about}}</textarea>
                               {% endif %}
                             </div>
                           </div>

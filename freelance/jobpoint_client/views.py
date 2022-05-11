@@ -9,6 +9,23 @@ from django.shortcuts import render
 import datetime
 from django.views.decorators.cache import cache_control
 
+
+
+def get_notifications(username,token):
+    urls=f'{url}client_n'
+    token={
+            'Authorization': f"Token {token}"
+            }
+    data={
+        "username":username
+        }
+    notification_response=requests.post(url=urls,headers=token,json=data)
+    notification_list=notification_response.json()[::-1]
+    return notification_list
+
+
+
+
 def index(request):
     return redirect('login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -92,17 +109,6 @@ def register(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def dashboard_client(request):
     if 'username' in request.session:
-        notification_list_url=f'{url}client_n'
-        token={
-                'Authorization': f"Token {request.session['user_token']}"
-              }
-        notification_data={
-            "username":request.session['username']
-            }
-        notification_response=requests.post(url=notification_list_url,headers=token,json=notification_data)
-
-        notification_list=notification_response.json()[::-1]
-
         username = request.session['username']
         urls=f'{url}client_job_list'
         
@@ -115,6 +121,7 @@ def dashboard_client(request):
         }
         response=requests.post(url=urls,headers=token,json=data)
         response_data=response.json()[::-1]
+        notification_list = get_notifications(request.session['username'],request.session['user_token'])
         return render(request,"client_dashboard.html",{"data":response_data,"username":username,"notification_list":notification_list})
     else:
         return redirect("login")
@@ -246,13 +253,15 @@ def editprofile(request):
                     # request.session['img_link']=updated_response.json()["img_link"]
                     # request.session['first_name']=updated_response.json()["first_name"]
                     request.session['img_link']=updated_response.json()["img_link"]
+                    notification_list = get_notifications(request.session['username'],request.session['user_token'])
                     messages.info(request,"profile has been updated")
-                    return render(request,"edit_profile.html", updated_data)
+                    return render(request,"edit_profile.html", {"username":request.session['username'],"response_data":updated_data,"notification_list":notification_list})
                     # return redirect('dashboardclient')
                 else:
                     print(edit_response.json()['msg'])
         print(response_data)
-        return render(request,"edit_profile.html",response_data)
+        notification_list = get_notifications(request.session['username'],request.session['user_token'])
+        return render(request,"edit_profile.html",{"username":request.session['username'],"response_data":response_data,"notification_list":notification_list})
     else:
         return redirect("login")
 
@@ -301,8 +310,8 @@ def makepost(request):
             else:
                 # messages.info(request,response.json()['msg'])
                 return redirect('makepost')
-
-        return render(request,"make_post.html",{"data":skill_view_data,"username":request.session['username']})
+        notification_list = get_notifications(request.session['username'],request.session['user_token'])
+        return render(request,"make_post.html",{"data":skill_view_data,"username":request.session['username'],"notification_list":notification_list})
     else:
         return redirect("login")
 
@@ -351,7 +360,8 @@ def upload(request):
             else:
                 messages.info(request,'Invalid Image Format')
                 return redirect('upload_file')
-        return render(request,'upload_file.html',{"username":request.session['username']})
+        notification_list = get_notifications(request.session['username'],request.session['user_token'])
+        return render(request,'upload_file.html',{"username":request.session['username'],"notification_list":notification_list})
     else:
         return redirect('login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -538,8 +548,8 @@ def chatbox(request,id=None):
                     i['count'] = j['count']
 
         
-
-        return render(request,"chatbox.html",{"username":request.session['username'],"user_name":user_name,"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json()})
+        notification_list = get_notifications(request.session['username'],request.session['user_token'])
+        return render(request,"chatbox.html",{"notification_list":notification_list,"username":request.session['username'],"user_name":user_name,"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json()})
     else:
         return redirect("login")
 
@@ -672,7 +682,8 @@ def task_status(request):
         response = requests.post(url=urls,headers=token,json=data)
         print(response.status_code,"@@@@@@@@@@@@@@")
         if response.status_code == 200:
-            return render(request,'task_status.html',{'status':response.json()[::-1],'username':request.session['username']})
+            notification_list = get_notifications(request.session['username'],request.session['user_token'])
+            return render(request,'task_status.html',{"notification_list":notification_list,'status':response.json()[::-1],'username':request.session['username']})
         else:
             return redirect('dashboardclient')
     else:
@@ -692,7 +703,8 @@ def proposal_history(request):
 
         print(response,"######")
         if response.status_code == 200:
-            return render(request,'proposal_history.html',{'history':response.json()[::-1],'username':request.session['username']})
+            notification_list = get_notifications(request.session['username'],request.session['user_token'])
+            return render(request,'proposal_history.html',{"notification_list":notification_list,'history':response.json()[::-1],'username':request.session['username']})
         else:
             return redirect('dashboardclient')
     else:
