@@ -336,7 +336,7 @@
             </button>
   </div>
   </ul>
-  {% elif user_data|length != 0 %}
+  {% else %}
   {% for user in user_data%}
   {% if user.username != username %}
     <div class="col-lg-3 d-flex align-items element-animation">
