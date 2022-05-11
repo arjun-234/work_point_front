@@ -10,10 +10,10 @@
             alert("cpi is not more than 10.")
     }
 </script>
-<form method="POST">
+<form method="POST" autocomplete="off">
     {% csrf_token %}
  
-    <div class="quals">
+    <div class="container">
         <div class="control-group ">
             <label style="margin-right:790px;"><b>Your Degree</b></label>
             <input type="text" name="degree" class="form-control p-4" value="{{data.recent_degree}}" id="degree" pattern="^[A-Za-z -]+$" placeholder="Your recent degree"
@@ -43,8 +43,8 @@
         </div>
         <div>
             <label style="margin-right:790px;"><b>About You</b></label>
-            <textarea class="form-control" name="about" placeholder="About yourself" required></textarea>
-        </div>
+            <textarea class="form-control" name="about" value="{{data.about}}" placeholder="About yourself" required></textarea>
+        </div> 
         <br>
         <div class="alert alert-success">
             <input type="submit" class="btn btn-success" value="Submit" style="margin-left:300px;" >

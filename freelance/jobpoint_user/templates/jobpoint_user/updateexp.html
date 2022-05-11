@@ -3,10 +3,10 @@
 {% block content %} 
 <!-- Form start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
     
-    <form method="POST">
+    <form method="POST" autocomplete="off">
         {% csrf_token %}
        
-        <div class="quals">
+        <div class="container">
             <div class="control-group ">
                 <label style="margin-right:790px;"><b>Job</b></label>
                 <input type="text" value="{{data.previous_job}}" name="pjob" pattern="^[A-Za-z -]+$" class="form-control p-4" id="degree" 
