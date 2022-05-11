@@ -644,25 +644,22 @@ def proposal_action(request,pid_action):
         p_id = int(pid_action.split('_')[0])
         action = pid_action.split('_')[1]
         if action == "True":
-            data={
-            "username":request.session['username'],
-            "is_accepted":True
-            }
+            is_accepted = True
         if action == "False":
-            data={
-            "username":request.session['username'],
-            "is_accepted":False
-            }
+            is_accepted = False
 
         urls=f'{url}proposal_action/{p_id}'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        
+        data={
+            "username":request.session['username'],
+            "is_accepted":is_accepted
+            }
         response = requests.put(url=urls,headers=token,json=data)
         if response.status_code == 200:
             if is_accepted:
-                messages.info(request,"Proposal Has been accepted")
+                messages.info(request,"Proposal Has been accepted!!")
             if not is_accepted:
                 messages.info(request,"Proposal has been rejected!!")
             return redirect("dashboardclient")
