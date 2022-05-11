@@ -307,10 +307,12 @@ def makepraposal(request,id):
           
             if response.status_code==200:
                 msg = "your proposal has been send"
-                return render(request,'jobpoint_user/praposal.html',{"username":username,"msg":msg,"notify":request.session['view_notification'],"pro_price":price_resposnse})
+                messages.info(request,msg)
+                return render(request,'jobpoint_user/praposal.html',{"username":username,"notify":request.session['view_notification'],"pro_price":price_resposnse})
             else:
                 msg = "your proposal has not been send"
-                return render(request,'jobpoint_user/praposal.html',{"username":username,"msg":msg,"notify":request.session['view_notification'],"pro_price":price_resposnse})
+                messages.info(request,msg)
+                return render(request,'jobpoint_user/praposal.html',{"username":username,"notify":request.session['view_notification'],"pro_price":price_resposnse})
         return render(request,'jobpoint_user/praposal.html',{"username":username,"pro_price":price_resposnse})
     else:
         return redirect('login')
