@@ -328,13 +328,15 @@
   <div class="container">
   <div class="row">
   {% if use_data|length is 0 %}
+  <ul class="messages">
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Sorry, No Result Found.</strong> 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>
-  {else}
+  </div>
+  </ul>
+  {% else %}
   {% for user in user_data%}
   {% if user.username != username %}
     <div class="col-lg-3 d-flex align-items element-animation">
