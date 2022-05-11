@@ -659,7 +659,7 @@ def proposal_action(request,pid_action):
         response = requests.put(url=urls,headers=token,json=data)
         if response.status_code == 200:
             if is_accepted == "True":
-                messages.info(request,f"Proposal Has been accepted!!{response.json()}")
+                messages.info(request,"Proposal Has been accepted!!")
             if is_accepted == "False":
                 messages.info(request,"Proposal has been rejected!!")
             return redirect("dashboardclient")
