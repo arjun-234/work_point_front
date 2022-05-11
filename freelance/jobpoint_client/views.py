@@ -642,10 +642,10 @@ def proposal_notification(request,userid_jobid):
 def proposal_action(request,pid_action):
     if 'username' in request.session:
         p_id = int(pid_action.split('_')[0])
-        action = pid_action.split('_')[1]
-        if action == "True":
+        action = bool(pid_action.split('_')[1])
+        if action == True:
             is_accepted = True
-        if action == "False":
+        if action == False:
             is_accepted = False
 
         urls=f'{url}proposal_action/{p_id}'
