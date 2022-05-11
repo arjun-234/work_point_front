@@ -512,7 +512,7 @@ def notification_view(request):
         print(find_data,"kkkkkkk")
         if response.status_code==200:
             # msg = "this is template"    
-            return render(request,'jobpoint_user/notification_details_show.html',{"username":username,"data":response.json(),"notify":find_data})
+            return render(request,'jobpoint_user/notification_details_show.html',{"username":username,"data":response.json()[::-1],"notify":find_data})
         else:
           
             return HttpResponse("did't get data")
