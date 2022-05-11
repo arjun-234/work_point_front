@@ -25,7 +25,7 @@ def dashboarduser(request):
         }
         response = requests.post(url=job,headers=token,json=data)
         print(response.json(),"@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        find = response.json()[::-1]
+        find = response.json()
         # notification/////////////////////
 
         Ndata={
