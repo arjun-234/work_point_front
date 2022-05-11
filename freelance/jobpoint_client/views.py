@@ -635,27 +635,30 @@ def proposal_notification(request,userid_jobid):
         }
         response=requests.post(url=urls,headers=token,json=data)
         details_data=response.json()
-        return render(request,"proposal_notification.html",{"username":request.session['username'],"data":details_data,"user_id":proposer_id})
+        return render(request,"proposal_notification.html",{"username":request.session['username'],"data":details_data})
     else:
         return redirect('login')
 
 def proposal_action(request,pid_action):
     if 'username' in request.session:
         p_id = int(pid_action.split('_')[0])
-        action = bool(pid_action.split('_')[1])
-        if action == True:
-            is_accepted = True
-        if action == False:
-            is_accepted = False
+        action = pid_action.split('_')[1]
+        if action == "True":
+            data={
+            "username":request.session['username'],
+            "is_accepted":True
+            }
+        if action == "False":
+            data={
+            "username":request.session['username'],
+            "is_accepted":False
+            }
 
         urls=f'{url}proposal_action/{p_id}'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        data={
-            "username":request.session['username'],
-            "is_accepted":is_accepted
-            }
+        
         response = requests.put(url=urls,headers=token,json=data)
         if response.status_code == 200:
             if is_accepted:
