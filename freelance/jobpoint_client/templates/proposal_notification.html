@@ -61,7 +61,7 @@
                                       <img class="rounded-circle" width="45" src="{{img_link}}" alt="">
                                   </div>    
                                   <div class="ml-2">
-                                      <div class="h5 m-0">@{{username}}</div>
+                                      <div class="h5 m-0">Job Details</div>
                                      {% comment %} {{username}} {% endcomment %}
                                   </div>
                               </div>
@@ -73,15 +73,16 @@
                       </div>
                       <div class="card-body">
                           <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{data.posted_date}}</div>
-                          <a class="card-link" href="#">
-                              <h5 class="card-title">{{data.title}}</h5>
+                          <a class="card-link">
+                              <h5 class="card-title">{{data.job.title}}</h5>
                           </a>
   
                           <p class="card-text">
-                            {{data.discription}}
+                            {{data.job.description}}
                           </p>
                           <div>
-                            {% for j in data.skill  %}
+                              Job Skills :
+                            {% for j in data.job.skill  %}
                             
                             <span class="badge badge-primary">{{j.name}}</span>
                             {% endfor %}
@@ -90,21 +91,67 @@
                           </div>
                       </div>
                       <div class="card-footer">
-                          <a href="#" class="card-link">Price <i class="fa fa-gittip"></i> {{data.price}}</a>
-                          <a href="#" class="card-link">Likes<i class="fa fa-gittip"></i> {{data.likes|length}}</a>
-                         
+                          <a class="card-link">Price <i class="fa fa-gittip"></i>{{data.job.price}}</a>
+                          <a class="card-link">Posted Date <i class="fa fa-gittip"></i>{{data.job.posted_date}}</a>
+                          <a class="card-link">Likes<i class="fa fa-gittip"></i>{{data.job.likes|length}}</a>
+                          <a class="card-link">Dislikes<i class="fa fa-gittip"></i>{{data.job.unlikes|length}}</a>
                       </div>
-                     
-                  </div>
+                  </div> 
+
+                  {% comment %} user side details {% endcomment %}
+                  
+                  <div class="card gedf-card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center"> 
+                                <div class="ml-2">
+                                    <div class="h5 m-0">Sent By @<a href="/user_profile/{{user_id}}">{{data.user_name}}</a></div>
+                                 
+                                </div>
+                            </div>
+                            <div>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                  
+                  <div class="card-body">
+                    <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{data.posted_date}}</div>
+                    <a class="card-link">
+                        <h5 class="card-title">Counter price :{{data.price}}</h5>
+                    </a>
+
+                    <p class="card-text">
+                    Discription :{{data.discription}}
+                    </p>
+                    <div>
+                        User Skills :
+                      {% for j in data.user_skill  %}
+                      
+                      <span class="badge badge-primary">{{j.name}}</span>
+                      {% endfor %}
+                  
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+                  {% comment %} end {% endcomment %}
                   <br>
                   
                   {% comment %} post 2 {% endcomment %}
                    <form action="">  
                        {% csrf_token %}
-                  <a href="/proposal_action/{{data.id}}_True" class="btn btn-outline-primary d-none d-lg-block">Accept</a>
+                  <a href="/proposal_action/{{data.id}}_True" class="btn btn-outline-primary d-lg-inline">Accept</a>
+                  
+                  <a href="/proposal_action/{{data.id}}_False" class="btn btn-outline-primary d-lg-inline">Reject</a>
                   <br>
-                  <a href="/proposal_action/{{data.id}}_False" class="btn btn-outline-primary d-none d-lg-block">Reject</a>
+  
                  </form> 
+                </div>
+                
                 </div>
             </div>
         </div>

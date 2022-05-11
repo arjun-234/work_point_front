@@ -625,7 +625,7 @@ def proposal_notification(request,userid_jobid):
         }
         response=requests.post(url=urls,headers=token,json=data)
         details_data=response.json()
-        return render(request,"proposal_notification.html",{"username":request.session['username'],"data":details_data})
+        return render(request,"proposal_notification.html",{"username":request.session['username'],"data":details_data,"user_id":proposer_id})
     else:
         return redirect('login')
 
