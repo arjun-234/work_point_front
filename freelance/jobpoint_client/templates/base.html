@@ -52,6 +52,7 @@
 
 <body data-spy="scroll" data-target=".navbar" data-offset="51">
     <!-- Navbar Start -->
+    
     {% if username in request.session.username %}
     
     <nav class="navbar sticky-top shadow-sm navbar-expand-lg bg-light navbar-light d-flex py-3 py-lg-0 px-lg-5">
@@ -154,7 +155,7 @@
             {% endfor %}
             </div>
           </div>
-        <a href="/logout" class="btn btn-outline-primary d-none d-lg-block">logout</a>
+        <a href="/logout" class="nav-item nav-link btn btn-outline-primary d-sm-inline">logout</a>
       </div>
     </nav>
     {% else %}
@@ -166,10 +167,12 @@
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-nav ml-auto py-10">
-        <a href="/login" class="btn btn-outline-primary d-none d-lg-block">Login</a>
-        <a href="/register" class="btn btn-outline-primary d-none d-lg-block">Sign up</a>
-        
+        <div class="collapse navbar-collapse px-lg-3" id="navbarCollapse">
+          <div class="navbar-nav m-auto py-0">
+            
+          </div>
+          <a href="/login" class="nav-item nav-link btn btn-outline-primary d-sm-inline">Login</a>
+          <a href="/register" class="nav-item nav-link btn btn-outline-primary d-sm-inline">Sign up</a>
         </div>
     </nav>
         

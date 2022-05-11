@@ -4,12 +4,26 @@
 {% block content %}
 
 {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+    <ul class="messages">
+        {% for message in messages %}
+    
+        <div style="background-color: antiquewhite;">
+    
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </p>
+        
+        
+        {% endfor %}
+      </ul>
+      {% endif %}
 <div class="col">
     <div class="row">
       <div class="col mb-3">

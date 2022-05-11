@@ -1,8 +1,16 @@
 {% extends 'jobpoint_user/base.html' %}
 <body>
 {% block content %} 
+<script>
 
-<form method="POST" autocomplete="off">
+    function check()
+    {
+        cpi = document.getElementById("cpi").value
+        if( cpi >=11.00)
+            alert("cpi is not more than 10.")
+    }
+</script>
+<form method="POST">
     {% csrf_token %}
  
     <div class="quals">
@@ -15,9 +23,9 @@
         
        
         <div class="control-group ">
-            <label style="margin-right:790px;"><b>CPI</b></label>
-            <input type="text" name="cpi" pattern="[^0][0-9][.][0-9]{2}" title="enter only digits and enter cpi in format eg :78.90 and should not start with 0"  class="form-control p-4" value="{{data.cpi}}" id="cpi" placeholder="Your CPI"
-                required="required"  />
+            <label style="margin-right:790px;"><b>CPI</b></label>   
+            <input type="text" name="cpi" pattern="[0-9]{1,2}[.][0-9]{1,2}"  title="enter only digits and enter cpi in format eg :00.00 " class="form-control p-4" id="cpi" placeholder="Your CPI "
+                required  data-validation-required-message = "enter cpi in format eg :00.00 " oninput="check()" /><small>format eg : 0.1 or 2.8</small>
             <p class="help-block text-danger"></p>
         </div>
 
@@ -33,12 +41,9 @@
                 required="required" data-validation-required-message="Please enter a university" />
             <p class="help-block text-danger"></p>
         </div>
-        <div class="control-group" required>
+        <div>
             <label style="margin-right:790px;"><b>About You</b></label>
-            <textarea class="form-control p-4" value="{{data.about}}" name="about" placeholder="About yourself">
-                {{data.about}}
-            </textarea>
-            <p class="help-block text-danger"></p>
+            <textarea class="form-control" name="about" placeholder="About yourself" required></textarea>
         </div>
         <br>
         <div class="alert alert-success">
