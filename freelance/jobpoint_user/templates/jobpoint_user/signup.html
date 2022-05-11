@@ -68,7 +68,7 @@
                     <div class="contact-form text-center">
                         <div id="success"></div>
                         <!-- Sign up form /////////////////////////////////////////////// -->
-                        <form name="sentMessage" method="POST" id="signForm" enctype="multipart/form-data" >
+                        <form name="sentMessage" method="POST" id="signForm" enctype="multipart/form-data" autocomplete="off">
                             {% csrf_token %}
                             <div class="form-row">
                                 <div class="control-group col-sm-6">

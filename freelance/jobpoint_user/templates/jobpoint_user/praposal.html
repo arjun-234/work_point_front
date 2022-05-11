@@ -3,7 +3,7 @@
 
     {% block content %}
     
-    <form method="POST" >
+    <form method="POST" autocomplete="off">
         {% csrf_token %}
         {{msg}}
         <div class="quals"style="border: 3px solid green;width:800px;margin-left:25%; border-radius:90px;background-color:rgba(180, 202, 194, 0.3)">
