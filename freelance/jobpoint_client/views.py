@@ -644,9 +644,9 @@ def proposal_action(request,pid_action):
         p_id = int(pid_action.split('_')[0])
         action = pid_action.split('_')[1]
         if action == "True":
-            is_accepted = True
+            is_accepted = "True"
         if action == "False":
-            is_accepted = False
+            is_accepted = "False"
 
         urls=f'{url}proposal_action/{p_id}'
         token={
@@ -658,9 +658,9 @@ def proposal_action(request,pid_action):
             }
         response = requests.put(url=urls,headers=token,json=data)
         if response.status_code == 200:
-            if is_accepted:
+            if is_accepted == "True":
                 messages.info(request,f"Proposal Has been accepted!!{response.json()}")
-            if not is_accepted:
+            if is_accepted == "False":
                 messages.info(request,"Proposal has been rejected!!")
             return redirect("dashboardclient")
         else:
