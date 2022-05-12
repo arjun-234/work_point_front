@@ -146,13 +146,23 @@
 
         {% comment %} End Notification {% endcomment %}
           &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; 
-          
+            
           <div class="dropdown" style="float:right;">
-            <a id="bell" class="btn btn-outline-primary"><i class="fa fa-bell" style="font-size:19px;margin-right:3px;"></i></a>
+            <a id="bell" class="btn btn-outline-primary">
+              <i class="fa fa-bell" style="font-size:19px;margin-right:3px;">
+              {% if notification_list|length != 0 %}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{notification_list|length}}
+            </span>
+            {% endif %}
+          </i>
+          </a>
             <div class="dropdown-content">
+              
             {% for i in notification_list %}
               <a href="/proposal_notification/{{i.user_id.id}}_{{i.job_id.id}}">Hey,{{username}}, {{i.user}} has sent the proposal request.</a>
             {% endfor %}
+            
             </div>
           </div>
         <a href="/logout" class="nav-item nav-link btn btn-outline-primary d-sm-inline">logout</a>
