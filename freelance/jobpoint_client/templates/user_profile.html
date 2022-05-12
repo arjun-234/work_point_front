@@ -470,7 +470,13 @@
                       </div>
                      
                       <div class="bio-row">
-                          <p><span>Skill</span>: {% for j in i.skill %}<span class="badge badge-primary">{{j.name}} </span>{% endfor %}</p>
+                        <div>
+                            {% for j in i.skill  %}
+                            <span>Skill</span>: 
+                            <span class="badge badge-primary">{{j.name}}</span>
+                            {% endfor %}
+                          </div>
+                         <!--  <p><span>Skill</span>: {% for j in i.skill %}<span class="badge badge-primary">{{j.name}} </span>{% endfor %}</p> -->
                           
                       </div>
                       
