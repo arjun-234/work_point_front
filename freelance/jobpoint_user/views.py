@@ -24,7 +24,7 @@ def dashboarduser(request):
             "username":request.session['username']
         }
         response = requests.post(url=job,headers=token,json=data)
-        print(response.json(),"@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        
         find = response.json()
         # notification/////////////////////
 
@@ -350,7 +350,6 @@ def editprofileuser(request):
                     "skill_list":skill_list
             }
             add_skill_res=requests.post(url=addskill,headers=token,json=skill_data)
-            print(viewskill,"?????????????")
             
             token={
                     'Authorization': f"Token {request.session['user_token']}"
@@ -360,7 +359,7 @@ def editprofileuser(request):
                     "username":request.session['username']
                 }
             response=requests.post(urls,headers=token,json=data)
-            print(response.json(),"!!!!!")
+            
             edit_url=f'{url}edit_profile'
             token={
                 'Authorization': f"Token {request.session['user_token']}"
@@ -382,6 +381,7 @@ def editprofileuser(request):
                     "about":about,
                     "mobile":mobile
                     }
+                
                 edit_response=requests.put(url=edit_url,headers=token,json=edit_data)
                 if edit_response.status_code==200:
                     messages.info(request,'Profile has been updated')
@@ -395,7 +395,6 @@ def editprofileuser(request):
     else:
         return redirect("login")
 
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
 def userupload(request):
     if 'username' in request.session:
