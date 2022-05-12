@@ -9,6 +9,19 @@
         if( cpi >=11.00)
             alert("cpi is not more than 10.")
     }
+    function year()
+    {
+        const d = new Date();
+        let year = d.getFullYear();
+        console.log(year)
+        passing_year =  document.getElementById("passing_year").value
+        console.log(passing_year)
+        if(passing_year >= year || passing_year < "1970")
+        {
+            alert("Please enter valid passing year between 1970 and current year ")
+        }
+        
+    }
 </script>
     <form method="POST" autocomplete="off">
         {% csrf_token %}
@@ -30,7 +43,7 @@
           
             <div class="control-group">
                 <label style="margin-right:790px;"><b>Passing year</b></label>
-                <input type="text" name="passing_year" class="form-control p-4" id="passing_year" title="must be in YYYY format and shoul not start with zero" pattern="[^0][0-9]+" maxlength="4" minlength="4" placeholder="Your Passing year YYYY"
+                <input type="text" name="passing_year" class="form-control p-4" id="passing_year" onmouseout="year()" title="must be in YYYY format and should not start with zero" pattern="[^0][0-9]+"  placeholder="Your Passing year YYYY"
                     required data-validation-required-message="Please enter you passing year" />
                 <p class="help-block text-danger"></p>
             </div>
