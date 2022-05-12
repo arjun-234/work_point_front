@@ -1,67 +1,69 @@
-{% extends 'jobpoint_user/base.html' %} 
-<body>
-{% block content %} 
-<!-- Form start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-    
-        <div style="background-color: antiquewhite;">
-    
-          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-          
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ message }}</strong> 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </div>
-      </p>
-    {% endfor %}
-      </ul>
-      {% endif %}
-<form method="POST" autocomplete="off">
-{% csrf_token %}
-<div class="container">
-    <div class="control-group ">
-        <label ><b>Previous Job</b></label>
-        <input type="text"  pattern="^[A-Za-z -]+$" name="pjob" class="form-control p-4"
-        required="required"  placeholder="Your Job" title="enter letters only no numeric and special charectors" />
-        <p class="help-block text-danger"></p>
-    </div>
-    
-    <div class="form-group ">
-        <label><b>previous Company</b></label>
-        <input type="text" name="pcomp"  pattern="^[.@&]?[a-zA-Z ]+[ !.@&()]?[ a-zA-Z0-9!()]+"  class="form-control p-4"  placeholder="Your Company"
-            required  />
-        <p class="help-block text-danger"></p>
-    </div>
+{% extends 'jobpoint_user/base.html' %}
 
-    <div class="control-group">
-        <label><b> Experience Year</b></label>
-        <input type="text" name="eyear" class="form-control p-4" id="passing_year" pattern="[0-9]+" maxlength="2" placeholder="Your Experience year"
-            required data-validation-required-message="Please enter your experience_year" />
-        <p class="help-block text-danger"></p>
+<body>
+  {% block content %}
+  <!-- Form start >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+
+    <div style="background-color: antiquewhite;">
+
+      <p{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
     </div>
-    
-    <div>
+    </p>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <form method="POST" autocomplete="off">
+    {% csrf_token %}
+    <div class="container">
+      <div class="control-group ">
+        <label><b>Previous Job</b></label>
+        <input type="text" pattern="^[A-Za-z -]+$" name="pjob" class="form-control p-4" required="required"
+          placeholder="Your Job" title="enter letters only no numeric and special charectors" />
+        <p class="help-block text-danger"></p>
+      </div>
+
+      <div class="form-group ">
+        <label><b>previous Company</b></label>
+        <input type="text" name="pcomp" pattern="^[.@&]?[a-zA-Z ]+[ !.@&()]?[ a-zA-Z0-9!()]+" class="form-control p-4"
+          placeholder="Your Company" required />
+        <p class="help-block text-danger"></p>
+      </div>
+
+      <div class="control-group">
+        <label><b> Experience Year</b></label>
+        <input type="text" name="eyear" class="form-control p-4" id="passing_year" pattern="[0-9]+" maxlength="2"
+          placeholder="Your Experience year" required
+          data-validation-required-message="Please enter your experience_year" />
+        <p class="help-block text-danger"></p>
+      </div>
+
+      <div>
         <label><b>About You</b></label>
         <textarea class="form-control" name="about" placeholder="About yourself" required></textarea>
+      </div>
+      <br>
+      <div class="alert alert-success">
+        <input type="submit" class="btn btn-success" value="Submit" style="margin-left:45%">
+      </div>
     </div>
-    <br>
-    <div class="alert alert-success">
-    <input type="submit" class="btn btn-success" value="Submit" style="margin-left:45%" >
-    </div> 
-</div>
-</form>
+  </form>
 
-</div>
-</div>
-</div>
-</div>
-</div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
 </body>
 <!-- form end >>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
 
-{% endblock %} 
+{% endblock %}

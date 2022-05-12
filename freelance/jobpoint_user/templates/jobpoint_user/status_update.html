@@ -1,44 +1,45 @@
-{% extends 'jobpoint_user/base.html' %} 
+{% extends 'jobpoint_user/base.html' %}
 {% load static %}
 
 {% block content %}
 <div class="container">
   {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-    
-        <div style="background-color: antiquewhite;">
-    
-          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-          
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ message }}</strong> 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+  <ul class="messages">
+    {% for message in messages %}
+
+    <div style="background-color: antiquewhite;">
+
+      <p{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </p>
-    {% endfor %}
-      </ul>
-      {% endif %}
-<form action="" method="POST" autocomplete="off">
-    {% csrf_token %}
-<div class="col">
-  <div class="control-group col">
-    <select name="status" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px;height: 35px;">
-      {% comment %} <option selected  class="control-group col -sm-10">Updated Status </option> {% endcomment %}
-      <option>todo</option>
-      <option selected>inprogress</option>
-      <option >completed</option>
-    </select><br><br>
-  <div>
     </div>
-  </div>
-</div>
-<div class="col">
-    <button class="btn btn-primary" type="submit" style="margin-left: 300px;" > update status </button>
-</div>
+    </p>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <form action="" method="POST" autocomplete="off">
+    {% csrf_token %}
+    <div class="col">
+      <div class="control-group col">
+        <select name="status" class="control-group col -sm-15 border border-secondary"
+          style="border-radius: 25px;height: 35px;">
+          {% comment %} <option selected class="control-group col -sm-10">Updated Status </option> {% endcomment %}
+          <option>todo</option>
+          <option selected>inprogress</option>
+          <option>completed</option>
+        </select><br><br>
+        <div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <button class="btn btn-primary" type="submit" style="margin-left: 300px;"> update status </button>
+    </div>
 </div>
 </form>
 </div>
@@ -46,6 +47,3 @@
 
 
 {% endblock %}
-
-
-
