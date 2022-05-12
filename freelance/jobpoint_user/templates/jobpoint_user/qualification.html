@@ -23,6 +23,25 @@
         
     }
 </script>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+
+    <div style="background-color: antiquewhite;">
+
+      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+      
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong> 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </p>
+{% endfor %}
+  </ul>
+  {% endif %}
     <form method="POST" autocomplete="off">
         {% csrf_token %}
         <div class="quals" style="margin-left:28%;">
@@ -30,7 +49,6 @@
                 <label style="margin-right:790px;"><b>Your Degree</b></label>
                 <input type="text" name="degree"  title="only alphabets" class="form-control p-4" id="degree" placeholder="Your recent degree"
                 pattern="^[A-Za-z -]+$" required  />
-                <p class="help-block text-danger"></p>
             </div>
             
            
@@ -38,20 +56,17 @@
                 <label style="margin-right:790px;"><b>CPI</b></label>   
                 <input type="text" name="cpi" pattern="[0-9]{1,2}[.][0-9]{1,2}"  title="enter only digits and enter cpi in format eg :00.00 " class="form-control p-4" id="cpi" placeholder="Your CPI "
                     required  data-validation-required-message = "enter cpi in format eg :00.00 " oninput="check()" /><small>format eg : 0.1 or 2.8</small>
-                <p class="help-block text-danger"></p>
             </div>
           
             <div class="control-group">
                 <label style="margin-right:790px;"><b>Passing year</b></label>
                 <input type="text" name="passing_year" class="form-control p-4" id="passing_year" onmouseout="year()" title="must be in YYYY format and should not start with zero" pattern="[^0][0-9]+"  placeholder="Your Passing year YYYY"
                     required data-validation-required-message="Please enter you passing year" />
-                <p class="help-block text-danger"></p>
             </div>
             <div class="control-group">
                 <label style="margin-right:790px;"><b>University</b></label>
                 <input type="text"  name="university" class="form-control p-4" id="university" title="only alphabets" pattern="^[A-Za-z -]+$"  placeholder="University Name"
                     required data-validation-required-message="Please enter a university" />
-                <p class="help-block text-danger"></p>
             </div>
             <div>
                 <label style="margin-right:790px;"><b>About You</b></label>

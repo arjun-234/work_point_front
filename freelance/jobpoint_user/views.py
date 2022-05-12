@@ -36,10 +36,6 @@ def dashboarduser(request):
         
         view_notification = response_notify.json()
         request.session['view_notification'] = view_notification
-
-        # response = requests.get(url=job)
-        # find = response.json()
-        # print(find,")))))))")
         
         if request.method == 'POST':
             msg = ""
@@ -55,11 +51,10 @@ def dashboarduser(request):
           
             if response_ser.status_code==200:
                 want = response_ser.json()
-                print(want,"LLLLL")
                 return render(request,'jobpoint_user/userboard.html',{"username":username,"search":want})
             else:
-                msg = "not found"
-                return HttpResponse("not found .....")
+                messages.info(request,"No result found")
+                return redirect('dashboarduser')
       
         return render(request,'jobpoint_user/userboard.html',{"username":username,"data":find,"notify":view_notification})
 
@@ -135,11 +130,11 @@ def showexp(request):
            return render(request,'jobpoint_user/expierence.html',{"username":username,"data":response.json(),"res":find_qual,"notify":request.session['view_notification']})
         else:
             return redirect('dashboarduser')
+    else:
+        return redirect('login')
        
         
 
-    else:
-        return redirect('login')
     
 ##@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
     
@@ -159,9 +154,7 @@ def update(request,id):
        
         if response.status_code==200:   
             getdata = response.json()
-            print(getdata,"hjhjhhjh")
             if request.method == 'POST':
-                print("calleddddd")
                 recent_degree=request.POST.get('degree')
                 cpi=request.POST.get('cpi')
                 passing_year=request.POST.get('passing_year')
@@ -174,21 +167,20 @@ def update(request,id):
                     "university":university,
                     "about":about
                 }
-                print(data,"AAAAA")
                 response_update = requests.put(url=updateuser,headers=token,json=data)
                 print(response_update,"mmmmmmmmmm")
                 if response_update.status_code==200:
+                    messages.info(request,  "Qualification has been Updated")
                     return redirect('showexp')
                 else:
-                    return HttpResponse("no")
+                    messages.info(request,"Qualification Not  Updated")
+                    return redirect('showexp')
            
             return render(request,'jobpoint_user/updatequal.html',{"username":username,"data":getdata,"notify":request.session['view_notification']})
         else:
-            return render(request,'jobpoint_user/updatequal.html',{"username":username,"data":getdata,"notify":request.session['view_notification']})
+            return render(request,'jobpoint_user/updatequal.html',{"username":username,"notify":request.session['view_notification']})
     else:
         return redirect('login')
-
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
 def updateexp(request,id):
     if 'username' in request.session:
@@ -202,8 +194,8 @@ def updateexp(request,id):
         data={
         "username":request.session['username']
         }
-        response=requests.get(url=getpost,headers=token)
        
+        response=requests.get(url=getpost,headers=token)
         if response.status_code==200:   
             getdata = response.json()
             print(getdata,"?????????????")
@@ -225,19 +217,19 @@ def updateexp(request,id):
                 response_update = requests.put(url=updateuser,headers=token,json=data)
                 print(response_update,"mmmmmmmmmm")
                 if response_update.status_code==200:
+                    messages.info(request,"Experience has been Updated")  
                     return redirect('showexp')
                 else:
-                    return HttpResponse("no")
-           
+                    messages.info(request,"Experience Not Updated")  
+                    return redirect('showexp')
+
             return render(request,'jobpoint_user/updateexp.html',{"username":username,"data":getdata,"notify":request.session['view_notification']})
         else:
             return redirect('dashboarduser')
     else:
         return redirect('login')
+           
     
-
-
-
 #@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
 def addexpirence(request):
@@ -265,9 +257,11 @@ def addexpirence(request):
             response = requests.post(url=exp,headers=token,json=data)
             print(response)
             if response.status_code==200:
+                messages.info(request,'Expirence Is Added')
                 return redirect('showexp')
             else:
-                return redirect('dashboarduser')
+                messages.info(request,'Expirence Not Added')
+                return redirect('showexp')
         return render(request,'jobpoint_user/addexpirence.html',{"username":username,"notify":request.session['view_notification']})
     else:
         return redirect('login')
@@ -393,7 +387,9 @@ def editprofileuser(request):
                     messages.info(request,'Profile has been updated')
                     return redirect('editprofileuser')
                 else:
-                    print(edit_response.json()['msg'])
+                    messages.info(request,'Profile not updated')
+                    return redirect('editprofileuser')
+              
                     
         return render(request,"jobpoint_user/editprofile.html",response_data)
     else:
@@ -421,6 +417,7 @@ def userupload(request):
                     "img_link":f'/static/media/{filename_new}'
                 }
                 response=requests.put(url=urls,headers=token,json=data)
+                messages.info(request,"Image Uploaded")
                 return redirect('editprofileuser')
             else:
                 messages.info(request,'Invalid Image Format')
@@ -484,6 +481,7 @@ def user_logout(request):
         print(response, "??")
         if response.status_code==200:
             del request.session['username']
+            messages.info(request,'Logout successfully')
             return redirect('login')
         else:
             messages.info(request,"could'nt logout")
@@ -511,7 +509,7 @@ def notification_view(request):
         find_data = response.json()
         print(find_data,"kkkkkkk")
         if response.status_code==200:
-            # msg = "this is template"    
+                
             return render(request,'jobpoint_user/notification_details_show.html',{"username":username,"data":response.json()[::-1],"notify":find_data})
         else:
           
@@ -532,15 +530,16 @@ def deletenotification(request,id):
         response = requests.delete(url= notify_url,headers=token) #url= notify_url
         print(response)
         if response.status_code == 200:
-            msg = "data deleted"
+            messages.info(request,"Notification Has Been Deleted")
             return redirect('notify')
             
         else:
-            msg = "not deleted"
-            return HttpResponse(msg)
-            
+            messages.info(request,"Notification Not  Deleted")
+            return redirect('notify')
     else:       
         return redirect('login')
+            
+            
             
             
 
@@ -582,20 +581,22 @@ def  project_status_update(request,id):
                 #  "token":request.session['user_token'],
                  "status":projectstatus
                 }
-                    
-
             response = requests.put(url= status_url,headers=token, json=data)
-
-            print(response)
-
             if response.status_code ==200:
+                messages.info(request,"Status is Updated")
                 return redirect('projectstatus')
             else:
-                return HttpResponse("not updated")
+                messages.info(request,"Status is not Updated")
+                return redirect('projectstatus')
 
         return render(request,'jobpoint_user/status_update.html',{"username":request.session['username']})                     
     else:
         return redirect('login')    
+                    
+
+
+          
+
 
 
 
@@ -605,16 +606,16 @@ def deletestatus(request,id):
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        print(delete_url,")))))")
+       
         response = requests.delete(url= delete_url,headers=token) #url= notify_url
-        print(response)
+        
         if response.status_code == 200:
-            msg = "data deleted"
+            messages.info(request,"Status is Deleted")
             return redirect('projectstatus')
             
         else:
-            msg = "not deleted"
-            return HttpResponse(msg)
+            messages.info(request,"Status Not Deleted")
+            return redirect('projectstatus')
             
     else:       
         return redirect('login')
@@ -752,18 +753,15 @@ def deletequalification(request,id):
        
       
         if response.status_code == 200:
-            msg = "data deleted"
+            messages.info(request,"Qualification Has Been Deleted")
             return redirect('showexp')
             
         else:
-            msg = "not deleted"
-            return HttpResponse(msg)
-            
+            messages.info(request,"Qualification Not Deleted")
+            return redirect('showexp')
     else:       
         return redirect('login')
-
-
-
+            
 
 def deleteexp(request,id):
     if 'username' in request.session:
@@ -775,12 +773,12 @@ def deleteexp(request,id):
         response = requests.delete(url=exp_url,headers=token) #url= notify_url
         
         if response.status_code == 200:
-            msg = "data deleted"
+            messages.info(request,"Experience Has Been Deleted")
             return redirect('showexp')
             
         else:
-            msg = "not deleted"
-            return HttpResponse(msg)
-            
+            messages.info(request,"Experience Not Deleted")
+            return redirect('showexp')
     else:       
         return redirect('login')
+            
