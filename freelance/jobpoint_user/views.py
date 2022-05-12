@@ -784,3 +784,24 @@ def deleteexp(request,id):
             
     else:       
         return redirect('login')
+
+def padingnotifications(request):
+    if 'username' in request.session:
+        username=request.session['username']
+        notify_url=f'{url}pandignotify'
+        token={
+                'Authorization': f"Token {request.session['user_token']}"
+              }
+        
+        data={
+             "token":request.session['user_token'],
+             "username":username
+        }
+        response = requests.get(url=notify_url,headers=token,json=data)
+        find_data = response.json()
+        if response.status_code==200:
+            return render(request,'jobpoint_user/pendingnotify.html',{"username":username,"data":response.json(),"notify":find_data,"notify":request.session['view_notification']})
+        else:
+            return HttpResponse("did't get data")
+    else:       
+        return redirect('login')

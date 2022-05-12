@@ -125,13 +125,15 @@
                     <p class="card-text">
                     Discription :{{data.discription}}
                     </p>
+                  
                     <div>
+                        {% if skills|length != 0 %}
                         User Skills :
                       {% for j in data.user_skill  %}
                       
                       <span class="badge badge-primary">{{j.name}}</span>
                       {% endfor %}
-                  
+                      {% endif %}
                         
                     </div>
                     
