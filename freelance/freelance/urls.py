@@ -21,12 +21,13 @@ from django.views.static import serve
 
 urlpatterns = [
     # if error occures than delete it..
-    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
-    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     
     path('admin/', admin.site.urls),
     path('', include('jobpoint_user.urls')),
     path('', include('jobpoint_client.urls')),
+    re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    
 ]
 
 if settings.DEBUG:
