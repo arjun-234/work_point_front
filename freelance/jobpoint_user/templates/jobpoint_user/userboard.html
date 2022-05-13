@@ -1,165 +1,145 @@
-{% extends 'jobpoint_user/base.html' %} 
+{% extends 'jobpoint_user/base.html' %}
+
 <body>
 
-    {% block content %}
+  {% block content %}
 
-    <form class="d-flex" method="post" style="width:800px;margin-left:300px;" >
-      {% csrf_token %}
-      <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-    <!-- search job =========================== -->
-    
+  <form class="d-flex" method="post" style="width:800px;margin-left:300px;">
+    {% csrf_token %}
+    <input class="form-control me-2" name="search" type="search" placeholder="Search By Job title" maxlength="50" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+  </form>
 
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-    
-        <div style="background-color: antiquewhite;">
-    
-          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-          
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>{{ message }}</strong> 
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </div>
-      </p>
-        
-        
-        {% endfor %}
-      </ul>
-      {% endif %}
+    <div style="background-color: antiquewhite;">
 
-   {% for d in search %}
+      <p{% if message.tags %} class="{{ message.tags }}" {% endif %}>
 
-        
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="contact-form text-center">
-                <div id="success">
-                </div>
-                <div class="card gedf-card">
-                  <div class="card-header">
-                      <div class="d-flex justify-content-between align-items-center">
-                          <div class="d-flex justify-content-between align-items-center">
-                              
-                              <div class="ml-2">
-                                  <!-- <div class="h5 m-0">@{{username}}</div> -->
-                                 
-                              </div>
-                          </div>
-                          
-                      </div>
-
-                  </div>
-                  <div class="card-body">
-                      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted date : {{d.posted_date}}</div>
-                      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted By : {{d.client_name}}</div>
-                     
-                          <h5 class="card-title"> Title : {{d.title}}</h5>
-
-
-                      <p class="card-text">
-                          {{d.description}}
-                      </p>
-                      <h5> Price : {{d.price}}</h5>
-                      <div>
-                        {% for j in d.skill  %}
-                            
-                        <span class="badge badge-primary">{{j.name}}</span>
-                        {% endfor %}
-                          
-                      </div>
-                  </div>
-                  <div class="card-footer">
-                 
-                      <a href="like/{{d.id}}" class="card-link">{{d.likes|length}}<i class="fa fa-gittip"></i> Like</a>
-                    
-                     <a href="dislike/{{d.id}}" class="card-link">{{d.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
-                   
-                      <a  href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp; 
-                    
-                     
-                  </div>
-              </div>
-              
-           
-            </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
     </div>
-</div>
-<br>
-{% endfor %}
+    </p>
 
 
-    <!-- view job Start ______________________________ -->
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <!-- search job =========================== -->
+
+  {% for d in search %}
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="contact-form text-center">
+        <div id="success">
+        </div>
+        <div class="card gedf-card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center">
+
+                <div class="ml-2">
+                  <!-- <div class="h5 m-0">@{{username}}</div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          {% if d.title == None %}
+          <h5 class="alert-primary text-primary text-center">No result found</h5>
+          {% endif %}
+          <div class="card-body">
+            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted date : {{d.posted_date}}</div>
+            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted By : {{d.client_name}}</div>
+            <h5 class="card-title"> Title : {{d.title}}</h5>
+            <p class="card-text">
+              Details {{d.description}}
+            </p>
+            <h5> Price : {{d.price}}</h5>
+            <div>
+              {% for j in d.skill  %}
+              <span class="badge badge-primary">{{j.name}}</span>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="like/{{d.id}}" class="card-link">{{d.likes|length}}<i class="fa fa-gittip"></i> Like</a>
+
+            <a href="dislike/{{d.id}}" class="card-link">{{d.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
+
+            <a href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp;
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <br>
+  {% endfor %}
+
+
+  <!-- view job Start ______________________________ -->
   {% for d in data %}
 
-        
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="contact-form text-center">
-                <div id="success">
-                </div>
-                <div class="card gedf-card">
-                  <div class="card-header">
-                      <div class="d-flex justify-content-between align-items-center">
-                          <div class="d-flex justify-content-between align-items-center">
-                              
-                              <div class="ml-2">
-                                  <!-- <div class="h5 m-0">@{{username}}</div> -->
-                                 
-                              </div>
-                          </div>
-                          
-                      </div>
 
-                  </div>
-                  <div class="card-body">
-                      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted date : {{d.posted_date}}</div>
-                      <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>Posted By : {{d.client_name}}</div>
-                     
-                          <h5 class="card-title"> Title : {{d.title}}</h5>
-
-
-                      <p class="card-text">
-                          {{d.description}}
-                      </p>
-                      <h5> Price : {{d.price}}</h5>
-                      <div>
-                        {% for j in d.skill  %}
-                            
-                        <span class="badge badge-primary">{{j.name}}</span>
-                        {% endfor %}
-                          
-                      </div>
-                  </div>
-                  <div class="card-footer">
-                 
-                      <a href="like/{{d.id}}" class="card-link">{{d.likes|length}}<i class="fa fa-gittip"></i> Like</a>
-                    
-                     <a href="dislike/{{d.id}}" class="card-link">{{d.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
-                   
-                      <a  href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp; 
-                    
-                     
-                  </div>
-              </div>
-              
-           
-            </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="contact-form text-center">
+        <div id="success">
         </div>
+        <div class="card gedf-card">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center">
+
+                <div class="ml-2">
+                  <!-- <div class="h5 m-0">@{{username}}</div> -->
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="card-body">
+            <h5 class="card-title "> Title : {{d.title}}</h5>
+            <div> <i class="fa fa-clock-o"></i><b>Posted date</b> : {{d.posted_date}}</div>
+            <div> <i class="fa fa-clock-o"></i><b>Posted by</b> {{d.client_name}}</div>
+            <div class="card-text text-justify text-center">
+              <b>Details : </b> {{d.description}}
+            </div>
+            <h5> Price : {{d.price}}</h5>
+            <div>
+              {% for j in d.skill  %}
+              <span class="badge badge-primary">{{j.name}}</span>
+              {% endfor %}
+
+            </div>
+          </div>
+          <div class="card-footer">
+            <a href="like/{{d.id}}" class="card-link">{{d.likes|length}}<i class="fa fa-gittip"></i> Like</a>
+
+            <a href="dislike/{{d.id}}" class="card-link">{{d.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
+
+            <a href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp;
+
+          </div>
+        </div>
+
+
+      </div>
     </div>
-</div>
-<br>
-{% endfor %}
+  </div>
+  </div>
+  <br>
+  {% endfor %}
+  {% endblock %}
 
-
-
-{% endblock %} 
-      
-  </body>
+</body>
