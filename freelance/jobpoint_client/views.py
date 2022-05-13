@@ -678,9 +678,23 @@ def task_status(request):
               }
         data={
             "username":request.session['username'],
-            }   
-
-        response = requests.post(url=urls,headers=token,json=data)
+            }
+        response = requests.post(url=urls,headers=token,json=data) 
+        if request.method=='POST':
+            rating_url=f'{url}give_rating'
+                 
+            star = request.POST['star']
+            user=request.POST['user']
+            job=request.POST['job']
+            rating_data={
+                "username":request.session['username'],
+                "job":job,
+                "user":user,
+                "number":star
+            }
+            rating_response=requests.post(url=rating_url,headers=token,json=rating_data)
+            return redirect('task_status')
+        
         print(response.status_code,"@@@@@@@@@@@@@@")
         if response.status_code == 200:
             notification_list = get_notifications(request.session['username'],request.session['user_token'])

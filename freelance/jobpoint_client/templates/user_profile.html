@@ -499,7 +499,7 @@
                     <h1 class="position-absolute text-uppercase text-primary">Education & Expericence</h1>
                 </div>
                 <div class="row align-items-center">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         {% if i.userqual|length != 0 %}
                         <h3 class="mb-4">My Education</h3>
                         <div class="border-left border-primary pt-2 pl-4 ml-2">
@@ -514,7 +514,7 @@
                         </div>
                         {% endif %}
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                         {%if i.userexp|length != 0 %}
                         <h3 class="mb-4">My Expericence</h3>
                         <div class="border-left border-primary pt-2 pl-4 ml-2">
@@ -529,6 +529,42 @@
                         </div>
                         {% endif %}
                     </div>
+
+                    <div class="col-lg-4">
+                        {% if i.completed_project|length != 0 %}
+                        <h3 class="mb-4">My Projects</h3>
+                        <div class="border-left border-primary pt-2 pl-4 ml-2">
+                            {% for z in i.completed_project %}
+                            <div class="position-relative mb-4">
+                                <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
+                                <h5 class="font-weight-bold mb-1">{{z.title}}</h5>
+                                <p class="mb-2"><strong>{{z.posted_date}}</strong> |
+                                    {% if z.rating is None %}
+                                        No rating 
+                                    {% else %} 
+                                        {% if z.rating == 1 %}
+                                            <small>⭐</small>
+                                        {% endif %}
+                                        {% if z.rating == 2 %}
+                                            <small>⭐⭐</small>
+                                        {% endif %}
+                                        {% if z.rating == 3 %}
+                                            <small>⭐⭐⭐</small>
+                                        {% endif %}
+                                        {% if z.rating == 4 %}
+                                            <small>⭐⭐⭐⭐</small>
+                                        {% endif %}
+                                        {% if z.rating == 5 %}
+                                            <small>⭐⭐⭐⭐⭐</small>
+                                        {% endif %}
+                                    {% endif %}</p>
+                                <p>{{z.description}}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
                 </div>
             </div>
         </div>
