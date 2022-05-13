@@ -4,7 +4,7 @@
 {% block content %}
 <b>
     <h3 class="alert alert-warning  text-center" role="alert">
-        Pending_Notification
+        Pending Notification
     </h3>
 </b>
 <br>
@@ -16,8 +16,6 @@
         <strong class="d-inline-block mb-2 text-success"  > Client :  {{i.client}}   <a href="notify/{{i.id}}" class="text-danger" style="margin-left: 480px;" >x</a></strong>
         <h5 class="mb-0">
           <p class="text-dark" >Job:  {{i.job}}</p>
-          
-         
         </h5>
         <div class="mb-1 text-muted">Price: {{i.price}}</div>
         <div class="mb-1 text-muted">
@@ -30,15 +28,14 @@
                   <strong class="d-inline-block mb-2 text-danger"> Status:   Not-Accepted  </strong>
                 
               {% else  %}    
-                <strong class="d-inline-block mb-2 text-danger"> Status:  Pendig </strong>
-               
+                <strong class="d-inline-block mb-2 text-danger"> Status:  Pending </strong>
              {% endif %}
                   
         </div>
        
         <p class="card-text mb-auto"  >  Discription : </p>
         <textarea name="" id="" cols="70" rows="1" disabled>{{i.discription}}</textarea>
-        <!-- <a href="notify/{{i.id}}" class="text-danger" >Delete</a> -->
+      
       </div>
       
     </div>
