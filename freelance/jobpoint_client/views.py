@@ -119,10 +119,11 @@ def dashboard_client(request):
         data={
             "username":request.session['username']
         }
+        img_das=request.session['img_link']
         response=requests.post(url=urls,headers=token,json=data)
         response_data=response.json()[::-1]
         notification_list = get_notifications(request.session['username'],request.session['user_token'])
-        return render(request,"client_dashboard.html",{"data":response_data,"username":username,"notification_list":notification_list})
+        return render(request,"client_dashboard.html",{"img_das":img_das,"data":response_data,"username":username,"notification_list":notification_list})
     else:
         return redirect("login")
 

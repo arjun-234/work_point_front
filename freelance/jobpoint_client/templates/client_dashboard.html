@@ -8,7 +8,7 @@
                 {% if request.session.img_link is None %}
                     <img class="img-fluid rounded-circle w-10 shadow-sm" src="{% static 'img/default.png' %}" alt="" style="height: 100px; reduce">
                 {% else %}
-                      <img class="img-fluid rounded-circle w-10 shadow-sm" src="{{request.session.img_link}}" height="mx-auto" width="140px;">
+                      <img class="img-fluid rounded-circle w-10 shadow-sm" src="{{img_das}}" height="mx-auto" width="140px;">
                 {% endif %}
                 
             </div>
