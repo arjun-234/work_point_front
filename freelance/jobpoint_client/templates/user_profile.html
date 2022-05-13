@@ -460,26 +460,28 @@
                   <h1 style="margin-top:10px;">Bio Graph</h1>
                   <div class="row">
                       <div class="bio-row">
-                          <p><span>First Name </span>: {{i.first_name}}</p>
+                          <p><span><b>First Name</b> </span>: {{i.first_name}}</p>
                       </div>
                       <div class="bio-row">
-                          <p><span>Last Name </span>: {{i.last_name}}</p>
+                          <p><span><b>Last Name</b> </span>: {{i.last_name}}</p>
                       </div>
                       <div class="bio-row">
-                          <p><span>Country </span>: {{i.country}}</p>
+                          <p><span><b>Country</b> </span>: {{i.country}}</p>
                       </div>
                      
                       <div class="bio-row">
-                        
-                          <p><span>Skill</span>: {% for j in i.skill %}{{j.name}}, {% endfor %}</p>
-                          
+                        <div><span><b>Skill</b></span>:
+                            {% for j in i.skill  %}
+                            <span class="badge badge-primary">{{j.name}}</span>
+                            {% endfor %}
+                        </div>
                       </div>
                       
                       <div class="bio-row">
-                          <p><span>Email </span>: {{i.email}}</p>
+                          <p><span><b>Email</b> </span>: {{i.email}}</p>
                       </div>
                       <div class="bio-row">
-                          <p><span>Mobile </span>: {{i.mobile}}</p>
+                          <p><span><b>Mobile</b> </span>: {{i.mobile}}</p>
                       </div>
                   </div>
               </div>

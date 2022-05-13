@@ -23,17 +23,24 @@
       </ul>
       {% endif %}
 
-<h4 style="text-align: center; margin-top: 20px;">  Proposal History </h4>
+<h4 style="text-align: center; margin-top: 20px; "><span class="text-primary">Proposal</span><span> History</span></h4>
       <!-- <marquee behavior="" direction=""> Progect Status </marquee> -->
 
       {% for i in  history  %}
                  <div class="col-md-6" style="margin-left: 300px; margin-top:20px;" >
                     <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                       <div class="card-body d-flex flex-column align-items-start">
-                          <h5 class="d-inline-block mb-2 text-success">  Status :  {% if i.is_accepted == True %}Accepted{% else %}Rejected{% endif %}</h5>
-                          <p class="text-dark" > proposed by: {{i.user.username}} </p>
-                        <div class="mb-1 text-muted"> <b>Job Title:  {{i.job.title}} </b> </div>
-                        <p class="text-dark" > <b>Job Descripton:</b> {{i.job.description}} </p>
+                        {% if i.is_accepted == True %}
+                        <h5 class="d-inline-block mb-2 text-success"><b style="color: black;">Status:</b> Accepted</h5>
+                        {% else %}
+                        <h5 class="d-inline-block mb-2 text-danger"><b style="color: black;">Status:</b> Rejected</h5>
+                        {% endif %}
+                        <p class="text-dark" > <b>proposed by:</b>@<a href="user_profile/{{i.user.id}}">{{i.user.username}}</a></p>
+                        <p class="text-dark" > <b>Job Title:</b> {{i.job.title}}</p>
+                        <p class="text-dark" > <b>Job Descripton:</b> {{i.job.description|linebreaks}}</p>
+                        <p class="text-dark" > <b>Job Price: </b>{{i.job.price}}</p>
+                        <p class="text-dark" > <b>Counter Price:</b> {{i.price}}</p>
+                        <p class="text-dark" > <b>User Message: </b>{{i.discription|linebreaks}}</p>
                       <div class="mb-1 text-muted">
                               
                           
