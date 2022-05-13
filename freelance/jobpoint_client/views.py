@@ -1,6 +1,5 @@
 from dataclasses import replace
 from django.contrib import messages
-from itsdangerous import json
 import requests
 from django.core.files.storage import FileSystemStorage
 from freelance.local_settings import url
