@@ -235,7 +235,7 @@ def editprofile(request):
                 edit_response=requests.put(url=edit_url,headers=token,json=edit_data)
                 response=requests.post(url=urls,headers=token,json=data)
                 request.session['img_link']=response.json()["img_link"]
-                # request.session['img_link']=edit_response.json()["img_link"]
+                request.session['img_link']=edit_response.json()["img_link"]
                 if edit_response.status_code==200:
                     data={
                                     "username":request.session['username']
