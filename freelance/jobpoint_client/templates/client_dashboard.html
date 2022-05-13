@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-5 px-50 pl-lg-0 pb-5 pb-lg-0">
-                {% if request.session.img_link is None %}
+                {% if img_das is None %}
                     <img class="img-fluid rounded-circle w-10 shadow-sm" src="{% static 'img/default.png' %}" alt="" style="height: 100px; reduce">
                 {% else %}
                       <img class="img-fluid rounded-circle w-10 shadow-sm" src="{{img_das}}" height="mx-auto" width="140px;">

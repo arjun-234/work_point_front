@@ -1,5 +1,6 @@
 from dataclasses import replace
 from django.contrib import messages
+from itsdangerous import json
 import requests
 from django.core.files.storage import FileSystemStorage
 from freelance.local_settings import url
@@ -111,6 +112,7 @@ def dashboard_client(request):
     if 'username' in request.session:
         username = request.session['username']
         urls=f'{url}client_job_list'
+        user_img=f'{url}user_details'
         
         token={
             'Authorization': f"Token {request.session['user_token']}"
@@ -119,11 +121,12 @@ def dashboard_client(request):
         data={
             "username":request.session['username']
         }
-        img_das=request.session['img_link']
+        user_img_response=requests.post(url=user_img,headers=token,json=data)
+    
         response=requests.post(url=urls,headers=token,json=data)
         response_data=response.json()[::-1]
         notification_list = get_notifications(request.session['username'],request.session['user_token'])
-        return render(request,"client_dashboard.html",{"img_das":img_das,"data":response_data,"username":username,"notification_list":notification_list})
+        return render(request,"client_dashboard.html",{"img_das":user_img_response.json()['img_link'],"data":response_data,"username":username,"notification_list":notification_list})
     else:
         return redirect("login")
 
