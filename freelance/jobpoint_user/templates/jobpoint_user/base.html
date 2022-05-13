@@ -54,6 +54,8 @@
         <a href="{% url 'showexp' %}" class="nav-item nav-link active">About Me</a>
         <a href="{% url 'userchatbox' %}" class="nav-item nav-link active">ChatBox</a>
         <a href="{% url 'projectstatus' %}" class="nav-item nav-link active">Project Status</a>
+        <a href="{% url 'pendingnotify' %}" class="nav-item nav-link active">Pending Request</a>
+        
 
         <!-- Example single danger button -->
         <div class="dropdown">
@@ -87,12 +89,12 @@
 
 
           {% if i.is_accepted == True %}
-          <a href="{% url 'notify' %}">Your job propasal of {{i.job}}<b class="text-success"> Accepted by
-            </b>{{i.client}}</a>
+          <a href="{% url 'notify' %}">Your job propasal of {{i.job.title}}<b class="text-success"> Accepted by
+            </b>{{i.job.client_name}}</a>
           <!-- <p class="text-success"></p> -->
           {% elif i.is_accepted == False %}
-          <a href="{% url 'notify' %}">Your job propasal of {{i.job}} <b class="text-danger">Rejected by
-            </b>{{i.client}}</a>
+          <a href="{% url 'notify' %}">Your job propasal of {{i.job.title}} <b class="text-danger">Rejected by
+            </b>{{i.job.client_name}}</a>
 
           <!-- <p class="text-danger"></p> -->
 

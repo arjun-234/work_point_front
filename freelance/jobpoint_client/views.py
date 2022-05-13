@@ -27,7 +27,10 @@ def get_notifications(username,token):
 
 
 def index(request):
-    return redirect('login')
+    if 'username' in request.session:
+        return redirect('dashboardclient')
+    else:
+        return redirect('login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def login(request):
    
@@ -238,7 +241,7 @@ def editprofile(request):
                 edit_response=requests.put(url=edit_url,headers=token,json=edit_data)
                 response=requests.post(url=urls,headers=token,json=data)
                 request.session['img_link']=response.json()["img_link"]
-                request.session['img_link']=edit_response.json()["img_link"]
+                # request.session['img_link']=edit_response.json()["img_link"]
                 if edit_response.status_code==200:
                     data={
                                     "username":request.session['username']
@@ -261,7 +264,8 @@ def editprofile(request):
                     return render(request,"edit_profile.html", {"username":request.session['username'],"response_data":updated_data,"notification_list":notification_list})
                     # return redirect('dashboardclient')
                 else:
-                    print(edit_response.json()['msg'])
+                    messages.info(request,edit_response.json()['msg'])
+                    return redirect('editprofile')
         print(response_data)
         notification_list = get_notifications(request.session['username'],request.session['user_token'])
         return render(request,"edit_profile.html",{"username":request.session['username'],"response_data":response_data,"notification_list":notification_list})

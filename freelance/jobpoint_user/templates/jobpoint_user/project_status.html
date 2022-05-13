@@ -1,50 +1,103 @@
 {% extends 'jobpoint_user/base.html' %}
+{% load static %}
 
 {% block content %}
-<h4 style="text-align: center;"> Project Status </h4>
 {% if messages %}
-<ul class="messages">
-  {% for message in messages %}
+    <ul class="messages">
+        {% for message in messages %}
+    
+        <div style="background-color: antiquewhite;">
+    
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </p>
+        
+        
+        {% endfor %}
+      </ul>
+      {% endif %}
 
-  <div style="background-color: antiquewhite;">
+<h4 style="text-align: center; margin-top: 20px; "><span class="text-primary">Project</span><span> Status</span></h4>
+      <!-- <marquee behavior="" direction=""> Progect Status </marquee> -->
 
-    <p{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+      {% for i in  status  %}
+                 <div class="col-md-6" style="margin-left: 300px; margin-top:20px;" >
+                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                      <div class="card-body d-flex flex-column align-items-start">
+                        {% if i.status is None %}
+                        <h5 class="d-inline-block mb-2 text-primary"><b style="color: black;">Status:</b> TODO
+                        </h5>
+                        {% else %}
+                        <h5 class="d-inline-block mb-2 text-primary"><b style="color: black;">Status:</b> {{i.status}}</h5>
+                        {% endif %}
+                        <p class="text-dark" > <b>Job Title:</b> {{i.job.title}}</p>
+                        <p class="text-dark" > <b>Job Descripton:</b> {{i.job.description|linebreaks}}</p>
+                        <p class="text-dark" > <b>Job Price: </b>{{i.job.price}}</p>
+                        <p class="text-dark" > <b>Counter Price:</b> {{i.price}}</p>
+                        <p class="text-dark" > <b>User Message: </b>{{i.discription|linebreaks}}</p>
+                      <div class="mb-1 text-muted">              
+                    </div>
+                    <div>
+                        <p style="margin-left: 300px;">
+                          <a class="btn btn-outline-success dropdown-toggle" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            Update Status
+                          </a>
+                        </p>
+                        <div class="collapse" id="collapseExample" style="margin-left: 175px;">
+                          <div class="card card-body">
+                            <div class="container d-flex justify-content-center ">
+  
 
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>{{ message }}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-  </div>
-  </p>
-  {% endfor %}
-</ul>
-{% endif %}
-{% for i in  status  %}
+                              <div class="row">
+                              
+                                <div class="col-md-12">
+                              
+                                  <div class="stars">
+                              
+                                <form method='POST' action="updatestatus/{{i.job.id}}" enctype='multipart/form-data' >
+                                  {% csrf_token %}
+                                  <select name="status" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px; height: 35px;">
+                                    {% if i.status is None or i.status == 'todo' %}
+                                    <option selected value="todo">Todo</option>
+                                    <option value="inprogress">Inprogress</option>
+                                    <option value="completed">Completed</option>
+                                    {% endif %}
+                                    {% if i.status == 'inprogress' %}
+                                    <option value="todo">Todo</option>
+                                    <option selected value="inprogress">Inprogress</option>
+                                    <option value="completed">Completed</option>
+                                    {% endif %}
+                                    {% if i.status == 'completed' %}
+                                    <option value="todo">Todo</option>
+                                    <option value="inprogress">Inprogress</option>
+                                    <option selected value="completed">Completed</option>
+                                    {% endif %}
+                                  </select>
+                                  
+                              <input type="submit" class="btn btn-outline-primary d-lg-inline" style="margin-top: 5px; margin-left: 125px;">
+                                </form>
+                              
+                              </div>
+                          </div>
+                        </div>
+                          
+                      </div>
+                      
+                       
+                      
+                        
+                      </div>
+                      
+                    </div>
+                  </div>
 
-{% if i.is_accepted == True %}
-
-<div class="col-md-6" style="margin-left: 380px;">
-  <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-    <div class="card-body d-flex flex-column align-items-start">
-      <strong class="d-inline-block mb-2 text-success"><a href="deletestatus/{{i.id}}" class="text-danger"
-          style="margin-left: 680px;">x</a> </strong>
-      <h5 class="d-inline-block mb-2 text-success"> Project Status : {{i.status}} <a href="updatestatus/{{i.id}}"
-          style="margin-left: 670px;"> <i class="fas fa-edit"></i> </a> </h5>
-      <h5 class="mb-0">
-        <p class="text-dark"> Client: {{i.client}} </p>
-      </h5>
-      <div class="mb-1 text-muted"> <b>Job Title: {{i.job}} </b> </div>
-      <div class="mb-1 text-muted">
-      </div>
-    </div>
-  </div>
-</div>
-{% elif i.is_accepted == None %}
-<h5 class="alert-primary text-primary text-center">Your Request in Pending</h5>
-{% endif %}
-
-{% endfor %}
+    {% endfor %}
 
 {% endblock %}

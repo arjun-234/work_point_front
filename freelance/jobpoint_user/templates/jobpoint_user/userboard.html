@@ -4,7 +4,7 @@
 
   {% block content %}
 
-  <form class="d-flex" method="post" style="width:800px;margin-left:300px;">
+  <form class="d-flex" method="post" style="width:800px;margin-left:300px;" autocomplete="off">
     {% csrf_token %}
     <input class="form-control me-2" name="search" type="search" placeholder="Search By Job title" maxlength="50" aria-label="Search">
     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -125,11 +125,19 @@
           </div>
           <div class="card-footer">
             <a href="like/{{d.id}}" class="card-link">{{d.likes|length}}<i class="fa fa-gittip"></i> Like</a>
-
             <a href="dislike/{{d.id}}" class="card-link">{{d.unlikes|length}}<i class="fa fa-gittip"></i> Dislike</a>
+            {% if pending_notify|length != 0 %}
 
+            {% for w in pending_notify %}
+            {% if w.job.id == d.id %}
+            <a class="card-link">Proposal Request Sent</a> &nbsp;&nbsp;&nbsp;
+            {% else %}
             <a href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp;
-
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <a href="makepraposal/{{d.id}}" class="card-link"> Make Praposal</a> &nbsp;&nbsp;&nbsp;
+            {% endif %}
           </div>
         </div>
 
