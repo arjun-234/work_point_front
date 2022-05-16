@@ -2,6 +2,13 @@
 <body>
     {% load static %}
 {% block content %}
+<b>
+    <h3 class="alert alert-warning  text-center" role="alert">
+        Pending Notification
+    </h3>
+</b>
+<br>
+<!-- <marquee behavior="" direction=""> <b>Notification</b></marquee> -->
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -23,7 +30,6 @@
         {% endfor %}
       </ul>
       {% endif %}
-
 <h4 style="text-align: center; margin-top: 20px; "><span class="text-primary">Pending</span><span> Request</span></h4>
       <!-- <marquee behavior="" direction=""> Progect Status </marquee> -->
 

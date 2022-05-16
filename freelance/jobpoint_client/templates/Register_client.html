@@ -46,8 +46,10 @@
                             {% csrf_token %}
                             <div class="form-row">
                                 <div class="control-group col-sm-6">
+
                                     <input type="text" pattern="^[A-Za-z -]+$" class="form-control p-4" name="first_name" placeholder="First Name"
                                         required data-validation-required-message="Please enter your name" />
+
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="control-group col-sm-6">
@@ -99,9 +101,12 @@
                             {% comment %} <label id="lbl"><b>Role</b></label> {% endcomment %}
                     
                             <select name="country" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px;height: 35px;">
-                                <!-- <option selected  class="control-group col -sm-10">Select Counrty</option> -->
+
+                                <option   class="control-group col -sm-10">Select Country</option>
+                                <option selected >INDIA</option>
+                    <!-- <option selected  class="control-group col -sm-10">Select Counrty</option> -->
                                 <option>INDIA</option>
-                                <option >USA</option>
+                  <option >USA</option>
                                 <option >UEA</option>
                                 <option >Pakistan</option>
                                 <option >Franch</option>
@@ -109,9 +114,10 @@
                               </select><br><br>
                          
                             <select name="role" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px; height: 35px;">
-                                <!-- <option selected value="0" class="control-group col -sm-10">Select Role</option> -->
+                                <option value="0" class="control-group col -sm-10">Select Role</option>
+
                                 <option value="1">Client</option>
-                                <option value="0">User</option>
+                                <option selected value="0">User</option>
                               </select><br><br><br><br>
                             <div>
                                 <button class="btn btn-outline-primary" type="submit" id="login">Register</button>

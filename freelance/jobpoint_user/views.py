@@ -24,10 +24,7 @@ def dashboarduser(request):
             "username":request.session['username']
         }
         response = requests.post(url=job,headers=token,json=data)
-        
         find = response.json()
-        # notification/////////////////////
-
         Ndata={
              
             "username":username
@@ -66,8 +63,6 @@ def dashboarduser(request):
     else:
         return redirect('login')
 
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-
 def qualificaton(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -78,14 +73,11 @@ def qualificaton(request):
         print(qual)
         if request.method == 'POST':
             user = request.session['username']
-           
-            print("user",user)
             recent_degree = request.POST.get('degree')
             cpi = request.POST.get('cpi')
             university = request.POST.get('university')
             passing_year = request.POST.get('passing_year')
             about = request.POST.get('about')
-            print("OPOP",user)
             data = {
                 "username":user,
                 "recent_degree":recent_degree,
@@ -94,7 +86,6 @@ def qualificaton(request):
                 "university":university,
                 "about":about
                 }
-            print(data)
             response = requests.post(url=qual,headers=token,json=data)
             print(response)
             if response.status_code==200:
@@ -104,9 +95,7 @@ def qualificaton(request):
         return render(request,'jobpoint_user/qualification.html',{"username":username,"notify":request.session['view_notification']})
     else:
         return redirect('login')
-    
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-
+ 
 def showexp(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -116,46 +105,33 @@ def showexp(request):
         print(username)
         exp = f'{url}userexp'
         qual = f'{url}userqual'
-        search = f'{url}jobsearch'
-
-        print(exp,"__________________")
         data = {
             "username":username
         }
-        
         response = requests.get(url=exp,headers=token,json=data)
-       
-        
         response_qual = requests.get(url=qual,headers=token,json=data)
-
         find_qual = response_qual.json()
-        # print(find_qual)
-        
+       
         if response.status_code==200 and response_qual.status_code==200 :
            return render(request,'jobpoint_user/expierence.html',{"username":username,"data":response.json(),"res":find_qual,"notify":request.session['view_notification']})
         else:
             return redirect('dashboarduser')
     else:
         return redirect('login')
-       
-        
-
-    
-##@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-    
+   
 def update(request,id):
     if 'username' in request.session:
         #print(id, "???")
         username=request.session['username']
-        update = f'{url}userqualificationview/{id}'
-        updateuser = f'{url}userqual/{id}'
+        getqual = f'{url}userqualificationview/{id}'
+        updateuserqual = f'{url}userqual/{id}'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
         data={
         "username":request.session['username']
         }
-        response=requests.get(url=update,headers=token,json=data)
+        response=requests.get(url=getqual,headers=token,json=data)
        
         if response.status_code==200:   
             getdata = response.json()
@@ -172,8 +148,7 @@ def update(request,id):
                     "university":university,
                     "about":about
                 }
-                response_update = requests.put(url=updateuser,headers=token,json=data)
-                print(response_update,"mmmmmmmmmm")
+                response_update = requests.put(url=updateuserqual,headers=token,json=data)
                 if response_update.status_code==200:
                     messages.info(request,  "Qualification has been Updated")
                     return redirect('showexp')
@@ -189,13 +164,12 @@ def update(request,id):
 
 def updateexp(request,id):
     if 'username' in request.session:
-      
         username=request.session['username']
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
         getpost = f'{url}user/{id}'
-        updateuser = f'{url}userexp/{id}'
+        updateuserexp = f'{url}userexp/{id}'
         data={
         "username":request.session['username']
         }
@@ -219,8 +193,7 @@ def updateexp(request,id):
                     "about":about
                 }
                 print(data,"AAAAA")
-                response_update = requests.put(url=updateuser,headers=token,json=data)
-                print(response_update,"mmmmmmmmmm")
+                response_update = requests.put(url=updateuserexp,headers=token,json=data)
                 if response_update.status_code==200:
                     messages.info(request,"Experience has been Updated")  
                     return redirect('showexp')
@@ -233,10 +206,6 @@ def updateexp(request,id):
             return redirect('dashboarduser')
     else:
         return redirect('login')
-           
-    
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-
 def addexpirence(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -244,7 +213,6 @@ def addexpirence(request):
                 'Authorization': f"Token {request.session['user_token']}"
               }
         exp = f'{url}userexp'
-
         if request.method == "POST":
             user = request.session['username']
             job = request.POST.get('pjob')
@@ -258,9 +226,7 @@ def addexpirence(request):
                 "experience_year": experience,
                 "about": about
             }
-            print(data)
             response = requests.post(url=exp,headers=token,json=data)
-            print(response)
             if response.status_code==200:
                 messages.info(request,'Expirence Is Added')
                 return redirect('showexp')
@@ -270,9 +236,6 @@ def addexpirence(request):
         return render(request,'jobpoint_user/addexpirence.html',{"username":username,"notify":request.session['view_notification']})
     else:
         return redirect('login')
-
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-  
 def makepraposal(request,id):
     if 'username' in request.session:
         token={
@@ -287,7 +250,6 @@ def makepraposal(request,id):
         }
         price_resposnse=requests.post(url=get_price,headers=token,json=price_data)
         price_resposnse=price_resposnse.json()['price']
-        print(praposal,"----------")
         if request.method == "POST":
             description = request.POST.get('description')
             price = request.POST.get('price')
@@ -298,10 +260,7 @@ def makepraposal(request,id):
                 "price":price,
                 
             }
-            print(data)
             response = requests.post(url=praposal,headers=token,json=data)
-            print(response.status_code,"@@@@@@@@@@@@")
-          
             if response.status_code==200:
                 msg = "your proposal has been send"
                 messages.info(request,msg)
@@ -318,11 +277,8 @@ def makepraposal(request,id):
 def editprofileuser(request):
     if 'username' in request.session:
         urls=f'{url}user_details'
-        
         getskill = f'{url}skill_list'
-
         addskill = f'{url}add_user_skill'
-        
         token={
             'Authorization': f"Token {request.session['user_token']}"
             
@@ -345,7 +301,6 @@ def editprofileuser(request):
                     "mobile":response.json()['mobile'],
                     "user_skill" : [i['name'] for i in response.json()['skill']]
         }
-        print(response_data)
         if request.method=='POST':
             skill_list=request.POST.getlist('checks[]')
             skill_data={
@@ -435,13 +390,11 @@ def like(request,id):
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        print(like_url)
         data={
             
             "username":username
         }
         response=requests.post(url=like_url,headers=token,json=data)
-        print(response,")()(())")
         if response.status_code==200:
             return redirect('dashboarduser')
         else:
@@ -456,13 +409,11 @@ def dislike(request,id):
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        print(dislike_url)
         data={
             
             "username":username
         }
         response=requests.post(url=dislike_url,headers=token,json=data)
-        print(response,")()(())")
         if response.status_code==200:
             return redirect('dashboarduser')
         else:
@@ -480,7 +431,6 @@ def user_logout(request):
                 "username":request.session['username']
         }
         response=requests.post(url=urls,headers=token,json=data)
-        print(response, "??")
         if response.status_code==200:
             del request.session['username']
             messages.info(request,'Logout successfully')
@@ -490,9 +440,6 @@ def user_logout(request):
             return redirect("dashboarduser")
     else:
         return redirect('login')
-
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-
 def notification_view(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -520,17 +467,13 @@ def notification_view(request):
     else:       
         return redirect('login')
     
-   
-                        
 def deletenotification(request,id):
     if 'username' in request.session:
         notify_url= f"{url}delete_notify/{id}"
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-        print(notify_url,")))))")
         response = requests.delete(url= notify_url,headers=token) #url= notify_url
-        print(response)
         if response.status_code == 200:
             messages.info(request,"Notification Has Been Deleted")
             return redirect('notify')
@@ -540,13 +483,6 @@ def deletenotification(request,id):
             return redirect('notify')
     else:       
         return redirect('login')
-            
-            
-            
-            
-
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
-
 def project_status(request):
     if 'username' in request.session:
         username=request.session['username']
@@ -594,13 +530,6 @@ def  project_status_update(request,id):
         return render(request,'jobpoint_user/status_update.html',{"username":request.session['username']})                     
     else:
         return redirect('login')    
-                    
-
-
-          
-
-
-
 
 def deletestatus(request,id):
     if 'username' in request.session:
@@ -608,9 +537,7 @@ def deletestatus(request,id):
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
-       
         response = requests.delete(url= delete_url,headers=token) #url= notify_url
-        
         if response.status_code == 200:
             messages.info(request,"Status is Deleted")
             return redirect('projectstatus')
@@ -618,13 +545,8 @@ def deletestatus(request,id):
         else:
             messages.info(request,"Status Not Deleted")
             return redirect('projectstatus')
-            
     else:       
         return redirect('login')
-
-
-
-#@cache_control(no_cache=True, must_revalidate=True, no_store=True)    
 
 def userchatbox(request,id=None):
     if 'username' in request.session:
@@ -736,12 +658,9 @@ def userchatbox(request,id=None):
                 if j['sender'] == i['id']:
                     i['count'] = j['count']
 
-        
-
         return render(request,"jobpoint_user/userchatbox.html",{"username":request.session['username'],"user_name":user_name,"user_unique_list":user_unique_list,"user_list":response.json(),"id":id,"img_link":img_link,"first_name":first_name,"msg_counter":msg_counter_response.json(),"notify":request.session['view_notification']})
     else:
         return redirect("login")
-
 
 
 def deletequalification(request,id):
@@ -752,8 +671,6 @@ def deletequalification(request,id):
               }
         
         response = requests.delete(url=qualifications_url,headers=token) #url= notify_url
-       
-      
         if response.status_code == 200:
             messages.info(request,"Qualification Has Been Deleted")
             return redirect('showexp')
