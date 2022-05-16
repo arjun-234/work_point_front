@@ -23,14 +23,28 @@ def get_notifications(username,token):
     notification_list=notification_response.json()[::-1]
     return notification_list
 
-
-
-
 def index(request):
     if 'username' in request.session:
-        return redirect('dashboardclient')
+        user_details_url = f'{url}user_details'
+        token={
+            'Authorization': f"Token {request.session['user_token']}"
+            
+        }
+        data={
+            "username":request.session['username']
+        }
+        user_details_response=requests.post(url=user_details_url,headers=token,json=data)
+        if user_details_response.status_code == 200:
+            if user_details_response.json()['is_client']:
+                return redirect('dashboardclient')
+            else:
+                return redirect('userboard')
+        else:
+            messages.info(request,user_details_response.status_code)
+            return redirect('login')
     else:
         return redirect('login')
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def login(request):
    
