@@ -25,6 +25,6 @@ urlpatterns = [
    path('userchatbox/<int:id>',views.userchatbox,name='userchatbox_id'),
    path('delqual/<int:id>',views.deletequalification,name='delqual'),
    path('delexp/<int:id>',views.deleteexp,name='delexp'),
-   path('pendingnotify',views.padingnotifications,name='pendingnotify'),
+   path('pendingnotify',views.pending_notifications,name='pendingnotify'),
 
 ]

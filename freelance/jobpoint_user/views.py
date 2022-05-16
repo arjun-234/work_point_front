@@ -53,7 +53,7 @@ def dashboarduser(request):
                 messages.info(request,"No result found")
                 return redirect('dashboarduser')
 
-        pending_notify_url=f'{url}pandignotify'
+        pending_notify_url=f'{url}pendingnotify'
         pending_notify_data={
              "username":request.session['username']
             }
@@ -702,10 +702,10 @@ def deleteexp(request,id):
         return redirect('login')
 
 
-def padingnotifications(request):
+def pending_notifications(request):
     if 'username' in request.session:
         username=request.session['username']
-        notify_url=f'{url}pandignotify'
+        notify_url=f'{url}pendingnotify'
         token={
                 'Authorization': f"Token {request.session['user_token']}"
               }
