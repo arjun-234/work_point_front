@@ -52,8 +52,13 @@ def dashboarduser(request):
             else:
                 messages.info(request,"No result found")
                 return redirect('dashboarduser')
-      
-        return render(request,'jobpoint_user/userboard.html',{"username":username,"data":find,"notify":view_notification})
+
+        pending_notify_url=f'{url}pandignotify'
+        pending_notify_data={
+             "username":request.session['username']
+            }
+        pending_notify_response = requests.get(url=pending_notify_url,headers=token,json=pending_notify_data)
+        return render(request,'jobpoint_user/userboard.html',{"username":username,"data":find,"notify":view_notification,"pending_notify":pending_notify_response.json()})
 
     else:
         return redirect('login')
@@ -246,9 +251,7 @@ def makepraposal(request,id):
         price_resposnse=requests.post(url=get_price,headers=token,json=price_data)
         price_resposnse=price_resposnse.json()['price']
         if request.method == "POST":
-            print("ooooooooo")
             description = request.POST.get('description')
-            print(description)
             price = request.POST.get('price')
             data = {
                 "job":id,
@@ -263,9 +266,9 @@ def makepraposal(request,id):
                 messages.info(request,msg)
                 return redirect('dashboarduser')
             else:
-                msg = "your proposal has not been send"
+                msg = response.json()['msg']
                 messages.info(request,msg)
-                return redirect('dashboarduser')
+                return redirect('makepraposal',id)
         return render(request,'jobpoint_user/praposal.html',{"username":username,"pro_price":price_resposnse})
     else:
         return redirect('login')
@@ -342,7 +345,7 @@ def editprofileuser(request):
                     messages.info(request,'Profile has been updated')
                     return redirect('editprofileuser')
                 else:
-                    messages.info(request,'Profile not updated')
+                    messages.info(request,edit_response.json()['msg'])
                     return redirect('editprofileuser')
               
                     

@@ -46,18 +46,20 @@
                             {% csrf_token %}
                             <div class="form-row">
                                 <div class="control-group col-sm-6">
-                                    <input type="text" class="form-control p-4" name="first_name" placeholder="First Name"
-                                        required pattern="^[A-Za-z -]+$" data-validation-required-message="Please enter your name" />
+
+                                    <input type="text" pattern="^[A-Za-z -]+$" class="form-control p-4" name="first_name" placeholder="First Name"
+                                        required data-validation-required-message="Please enter your name" />
+
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="control-group col-sm-6">
-                                    <input type="text" class="form-control p-4" name="last_name" placeholder="Last Name"
+                                    <input pattern="^[A-Za-z -]+$" type="text" class="form-control p-4" name="last_name" placeholder="Last Name"
                                         required data-validation-required-message="Please enter your Name" />
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="control-group col-sm-14">
-                                <input pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{5,20}$" type="text" class="form-control p-4" name="username" placeholder="Your Usename"
+                                <input pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{5,20}$" type="text" class="form-control p-4" name="username" placeholder="Your Username"
                                    title="  1)Username must be Start with Uppercase and lowercase letters
                                             2) Username may only contain Numbers from 0-9 and Special characters _ and .
                                             3) Username may not Begin with characters _ - .
@@ -99,9 +101,12 @@
                             {% comment %} <label id="lbl"><b>Role</b></label> {% endcomment %}
                     
                             <select name="country" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px;height: 35px;">
+
                                 <option   class="control-group col -sm-10">Select Country</option>
                                 <option selected >INDIA</option>
-                                <option >USA</option>
+                    <!-- <option selected  class="control-group col -sm-10">Select Counrty</option> -->
+                                <option>INDIA</option>
+                  <option >USA</option>
                                 <option >UEA</option>
                                 <option >Pakistan</option>
                                 <option >Franch</option>
@@ -110,6 +115,7 @@
                          
                             <select name="role" class="control-group col -sm-15 border border-secondary" style="border-radius: 25px; height: 35px;">
                                 <option value="0" class="control-group col -sm-10">Select Role</option>
+
                                 <option value="1">Client</option>
                                 <option selected value="0">User</option>
                               </select><br><br><br><br>

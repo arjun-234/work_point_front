@@ -27,7 +27,10 @@ def get_notifications(username,token):
 
 
 def index(request):
-    return redirect('login')
+    if 'username' in request.session:
+        return redirect('dashboardclient')
+    else:
+        return redirect('login')
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def login(request):
    
@@ -111,6 +114,7 @@ def dashboard_client(request):
     if 'username' in request.session:
         username = request.session['username']
         urls=f'{url}client_job_list'
+        user_img=f'{url}user_details'
         
         token={
             'Authorization': f"Token {request.session['user_token']}"
@@ -119,10 +123,12 @@ def dashboard_client(request):
         data={
             "username":request.session['username']
         }
+        user_img_response=requests.post(url=user_img,headers=token,json=data)
+    
         response=requests.post(url=urls,headers=token,json=data)
         response_data=response.json()[::-1]
         notification_list = get_notifications(request.session['username'],request.session['user_token'])
-        return render(request,"client_dashboard.html",{"data":response_data,"username":username,"notification_list":notification_list})
+        return render(request,"client_dashboard.html",{"img_das":user_img_response.json()['img_link'],"data":response_data,"username":username,"notification_list":notification_list})
     else:
         return redirect("login")
 
@@ -258,7 +264,8 @@ def editprofile(request):
                     return render(request,"edit_profile.html", {"username":request.session['username'],"response_data":updated_data,"notification_list":notification_list})
                     # return redirect('dashboardclient')
                 else:
-                    print(edit_response.json()['msg'])
+                    messages.info(request,edit_response.json()['msg'])
+                    return redirect('editprofile')
         print(response_data)
         notification_list = get_notifications(request.session['username'],request.session['user_token'])
         return render(request,"edit_profile.html",{"username":request.session['username'],"response_data":response_data,"notification_list":notification_list})
@@ -678,9 +685,23 @@ def task_status(request):
               }
         data={
             "username":request.session['username'],
-            }   
-
-        response = requests.post(url=urls,headers=token,json=data)
+            }
+        response = requests.post(url=urls,headers=token,json=data) 
+        if request.method=='POST':
+            rating_url=f'{url}give_rating'
+                 
+            star = request.POST['star']
+            user=request.POST['user']
+            job=request.POST['job']
+            rating_data={
+                "username":request.session['username'],
+                "job":job,
+                "user":user,
+                "number":star
+            }
+            rating_response=requests.post(url=rating_url,headers=token,json=rating_data)
+            return redirect('task_status')
+        
         print(response.status_code,"@@@@@@@@@@@@@@")
         if response.status_code == 200:
             notification_list = get_notifications(request.session['username'],request.session['user_token'])
